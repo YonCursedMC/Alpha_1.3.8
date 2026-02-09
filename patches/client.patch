@@ -958,7 +958,7 @@
 +		}
 +		if(this.timerS[2]) {
 +			this.timers[2]++;
-+			if(this.timers[2] <= 20 + 10 + 2) {
++			if(this.timers[2] <= 20 * 2 + 10 + 2) {
 +				GlitchNoise.playGlitch();
 +				if(this.timers[2] % 20 == 0) {
 +					this.colorInverter.hide();
@@ -1020,7 +1020,7 @@
  												}
 +
 +												if(Keyboard.getEventKey() == Keyboard.KEY_F6) {
-+													//this.theWorld.randomEvent.event10(this.thePlayer);
++													this.theWorld.randomEvent.event8(this.thePlayer);
 +												}
 +
  
@@ -1070,7 +1070,7 @@
  }
 --- /dev/null
 +++ net/minecraft/src/GuiAlex.java
-@@ -1,0 +1,42 @@
+@@ -1,0 +1,43 @@
 +package net.minecraft.src;
 +
 +import org.lwjgl.opengl.GL11;
@@ -1093,11 +1093,12 @@
 +	}
 +
 +	protected void keyTyped(char var1, int var2) {
++		this.mc.displayGuiScreen((GuiScreen)null);
 +		if(new Random().nextInt(3) == 0) {
-+			this.mc.displayGuiScreen((GuiScreen)null); if(!this.mc.isMultiplayerWorld()) {
-+				EntityJB jb = new EntityJB(this.mc.theWorld);
-+				jb.setPosition(this.mc.thePlayer.posX + 16, this.mc.theWorld.getHeightValue((int)this.mc.thePlayer.posX + 16, (int)this.mc.thePlayer.posZ), this.mc.thePlayer.posZ);
-+				this.mc.theWorld.entityJoinedWorld(jb);
++			if(!this.mc.isMultiplayerWorld()) {
++				EntityAX ax = new EntityAX(this.mc.theWorld);
++				ax.setPosition(this.mc.thePlayer.posX + 16, this.mc.theWorld.getHeightValue((int)this.mc.thePlayer.posX + 16, (int)this.mc.thePlayer.posZ), this.mc.thePlayer.posZ);
++				this.mc.theWorld.entityJoinedWorld(ax);
 +			} else {
 +				((EntityClientPlayerMP)this.mc.thePlayer).netClientHandler.addToSendQueue(new Packet80Event(1));
 +			}
@@ -1190,7 +1191,7 @@
  }
 --- /dev/null
 +++ net/minecraft/src/GuiJeb_.java
-@@ -1,0 +1,40 @@
+@@ -1,0 +1,44 @@
 +package net.minecraft.src;
 +
 +import org.lwjgl.opengl.GL11;
@@ -1214,8 +1215,9 @@
 +	}
 +
 +	protected void keyTyped(char var1, int var2) {
++		this.mc.displayGuiScreen((GuiScreen)null);
 +		if(new Random().nextInt(3) == 0) {
-+			this.mc.displayGuiScreen((GuiScreen)null); if(!this.mc.isMultiplayerWorld()) {
++			if(!this.mc.isMultiplayerWorld()) {
 +				EntityJB jb = new EntityJB(this.mc.theWorld);
 +				jb.setPosition(this.mc.thePlayer.posX + 16, this.mc.theWorld.getHeightValue((int)this.mc.thePlayer.posX + 16, (int)this.mc.thePlayer.posZ), this.mc.thePlayer.posZ);
 +				this.mc.theWorld.entityJoinedWorld(jb);
@@ -1226,9 +1228,12 @@
 +	}
 +
 +	protected void drawGuiContainerBackgroundLayer(float var1) {
-+		int var2 = this.mc.renderEngine.getTexture("/gui/alex.png"); GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-+		this.mc.renderEngine.bindTexture(var2); int var3 = (this.width - this.xSize) / 2;
-+		int var4 = (this.height - this.ySize) / 2; this.drawTexturedModalRect(var3, var4, 0, 0, this.xSize, this.ySize);
++		int var2 = this.mc.renderEngine.getTexture("/gui/alex.png");
++		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
++		this.mc.renderEngine.bindTexture(var2);
++		int var3 = (this.width - this.xSize) / 2;
++		int var4 = (this.height - this.ySize) / 2;
++		this.drawTexturedModalRect(var3, var4, 0, 0, this.xSize, this.ySize);
 +	}
 +}
 --- /dev/null
