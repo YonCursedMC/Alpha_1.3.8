@@ -1,0 +1,2045 @@
+--- /dev/null
++++ net/minecraft/src/EntityJB.java
+@@ -1,0 +1,33 @@
++package net.minecraft.src;
++
++public class EntityJB extends EntityAttack {
++	public EntityJB(World var1) {
++		super(var1);
++		this.texture = "/mob/jb.png";
++		this.health = 138;
++		this.moveSpeed = 1.0F;
++		this.attackStrange = 1;
++	}
++
++	public void onUpdate() {
++		for(int i = 0; i < 4; i++) {
++			super.onUpdate();
++		}
++	}
++
++	public boolean canAttackEntity(Entity var1, int var2) {
++		return false;
++	}
++
++	protected String getLivingSound() {
++		return null;
++	}
++
++	protected String getHurtSound() {
++		return null;
++	}
++
++	protected String getDeathSound() {
++		return null;
++	}
++}
+--- net/minecraft/src/MobSpawnerBase.java
++++ net/minecraft/src/MobSpawnerBase.java
+@@ -21,7 +21,7 @@
+ 	public byte fillerBlock = (byte)Block.dirt.blockID;
+ 	public int field_6502_q = 5169201;
+ 	protected Class[] biomeMonsters = new Class[]{EntitySpider.class, EntityZombie.class, EntitySkeleton.class, EntityCreeper.class};
+-	protected Class[] biomeCreatures = new Class[]{EntitySheep.class, EntityPig.class, EntityChicken.class, EntityCow.class};
++	protected Class[] biomeCreatures = new Class[]{EntitySheep.class, EntityPig.class, EntityChicken.class, EntityCow.class, EntityAlex.class};
+ 	private static MobSpawnerBase[] biomeLookupTable = new MobSpawnerBase[4096];
+ 
+ 	public static void generateBiomeLookup() {
+--- net/minecraft/src/ModelRenderer.java
++++ net/minecraft/src/ModelRenderer.java
+@@ -18,10 +18,21 @@
+ 	public boolean mirror = false;
+ 	public boolean field_1403_h = true;
+ 	public boolean field_1402_i = false;
++	public float XX;
++	public float YY;
+ 
+ 	public ModelRenderer(int var1, int var2) {
+ 		this.textureOffsetX = var1;
+ 		this.textureOffsetY = var2;
++		this.XX = 64.0F;
++		this.YY = 32.0F;
++	}
++
++	public ModelRenderer(int var1, int var2, float X, float Y) {
++		this.textureOffsetX = var1;
++		this.textureOffsetY = var2;
++		this.XX = X;
++		this.YY = Y;
+ 	}
+ 
+ 	public void func_921_a(float var1, float var2, float var3, int var4, int var5, int var6) {
+@@ -62,12 +73,12 @@
+ 		this.corners[5] = var16;
+ 		this.corners[6] = var17;
+ 		this.corners[7] = var18;
+-		this.faces[0] = new TexturedQuad(new PositionTexureVertex[]{var16, var12, var13, var17}, this.textureOffsetX + var6 + var4, this.textureOffsetY + var6, this.textureOffsetX + var6 + var4 + var6, this.textureOffsetY + var6 + var5);
+-		this.faces[1] = new TexturedQuad(new PositionTexureVertex[]{var20, var15, var18, var14}, this.textureOffsetX + 0, this.textureOffsetY + var6, this.textureOffsetX + var6, this.textureOffsetY + var6 + var5);
+-		this.faces[2] = new TexturedQuad(new PositionTexureVertex[]{var16, var15, var20, var12}, this.textureOffsetX + var6, this.textureOffsetY + 0, this.textureOffsetX + var6 + var4, this.textureOffsetY + var6);
+-		this.faces[3] = new TexturedQuad(new PositionTexureVertex[]{var13, var14, var18, var17}, this.textureOffsetX + var6 + var4, this.textureOffsetY + 0, this.textureOffsetX + var6 + var4 + var4, this.textureOffsetY + var6);
+-		this.faces[4] = new TexturedQuad(new PositionTexureVertex[]{var12, var20, var14, var13}, this.textureOffsetX + var6, this.textureOffsetY + var6, this.textureOffsetX + var6 + var4, this.textureOffsetY + var6 + var5);
+-		this.faces[5] = new TexturedQuad(new PositionTexureVertex[]{var15, var16, var17, var18}, this.textureOffsetX + var6 + var4 + var6, this.textureOffsetY + var6, this.textureOffsetX + var6 + var4 + var6 + var4, this.textureOffsetY + var6 + var5);
++		this.faces[0] = new TexturedQuad(new PositionTexureVertex[]{var16, var12, var13, var17}, this.textureOffsetX + var6 + var4, this.textureOffsetY + var6, this.textureOffsetX + var6 + var4 + var6, this.textureOffsetY + var6 + var5, this.XX, this.YY);
++		this.faces[1] = new TexturedQuad(new PositionTexureVertex[]{var20, var15, var18, var14}, this.textureOffsetX + 0, this.textureOffsetY + var6, this.textureOffsetX + var6, this.textureOffsetY + var6 + var5, this.XX, this.YY);
++		this.faces[2] = new TexturedQuad(new PositionTexureVertex[]{var16, var15, var20, var12}, this.textureOffsetX + var6, this.textureOffsetY + 0, this.textureOffsetX + var6 + var4, this.textureOffsetY + var6, this.XX, this.YY);
++		this.faces[3] = new TexturedQuad(new PositionTexureVertex[]{var13, var14, var18, var17}, this.textureOffsetX + var6 + var4, this.textureOffsetY + 0, this.textureOffsetX + var6 + var4 + var4, this.textureOffsetY + var6, this.XX, this.YY);
++		this.faces[4] = new TexturedQuad(new PositionTexureVertex[]{var12, var20, var14, var13}, this.textureOffsetX + var6, this.textureOffsetY + var6, this.textureOffsetX + var6 + var4, this.textureOffsetY + var6 + var5, this.XX, this.YY);
++		this.faces[5] = new TexturedQuad(new PositionTexureVertex[]{var15, var16, var17, var18}, this.textureOffsetX + var6 + var4 + var6, this.textureOffsetY + var6, this.textureOffsetX + var6 + var4 + var6 + var4, this.textureOffsetY + var6 + var5, this.XX, this.YY);
+ 		if(this.mirror) {
+ 			for(int var19 = 0; var19 < this.faces.length; ++var19) {
+ 				this.faces[var19].func_809_a();
+--- /dev/null
++++ net/minecraft/src/EntityJeb_.java
+@@ -1,0 +1,43 @@
++package net.minecraft.src;
++
++public class EntityJeb_ extends EntityAttack {
++
++	public EntityJeb_(World var1) {
++		super(var1);
++		this.texture = "/mob/jeb_.png";
++		this.health = 318;
++		this.moveSpeed = 1.0F;
++		this.attackStrange = 1;
++	}
++
++	public void onUpdate() {
++		super.onUpdate();
++		EntityPlayer player = this.worldObj.getClosestPlayerToEntity(this, 60);
++		if(player != null) {
++			if(this.getDistanceToEntity(player) <= 16) {
++				for(int i = 0; i < 3; i++) {
++					super.onUpdate();
++				}
++			}
++			if(this.getDistanceToEntity(player) <= 5) {
++				this.setEntityDead();
++			}
++		}
++	}
++
++	public boolean canAttackEntity(Entity var1, int var2) {
++		return false;
++	}
++
++	protected String getLivingSound() {
++		return null;
++	}
++
++	protected String getHurtSound() {
++		return null;
++	}
++
++	protected String getDeathSound() {
++		return null;
++	}
++}
+--- net/minecraft/src/World.java
++++ net/minecraft/src/World.java
+@@ -54,6 +54,14 @@
+ 	private int field_9426_L;
+ 	private List field_1012_M;
+ 	public boolean multiplayerWorld;
++	public int alexC = 0;
++	public boolean alexCU;
++	public WorldRandomEvent randomEvent;
++	public boolean entityX;
++	public boolean last;
++	public int SX;
++	public int SY;
++	public int SZ;
+ 
+ 	public static NBTTagCompound func_629_a(File var0, String var1) {
+ 		File var2 = new File(var0, "saves");
+@@ -135,7 +143,11 @@
+ 		this.field_9431_w = var1;
+ 		this.randomSeed = var3;
+ 		this.worldProvider = var2;
++		this.randomEvent = new WorldRandomEvent(this);
+ 		var2.registerWorld(this);
++		this.alexCU = false;
++		this.entityX = false;
++		this.last = false;
+ 		this.chunkProvider = this.func_4081_a(this.field_9432_t);
+ 		this.calculateInitialSkylight();
+ 	}
+@@ -179,7 +191,11 @@
+ 		this.spawnZ = var1.spawnZ;
+ 		this.sizeOnDisk = var1.sizeOnDisk;
+ 		this.worldProvider = var2;
++		this.randomEvent = new WorldRandomEvent(this);
+ 		var2.registerWorld(this);
++		this.alexCU = false;
++		this.entityX = false;
++		this.last = false;
+ 		this.chunkProvider = this.func_4081_a(this.field_9432_t);
+ 		this.calculateInitialSkylight();
+ 	}
+@@ -218,6 +234,10 @@
+ 		this.multiplayerWorld = false;
+ 		this.field_9433_s = var1;
+ 		this.field_9431_w = var2;
++		this.alexCU = false;
++		this.entityX = false;
++		this.last = false;
++		this.randomEvent = new WorldRandomEvent(this);
+ 		var1.mkdirs();
+ 		this.field_9432_t = new File(var1, var2);
+ 		this.field_9432_t.mkdirs();
+@@ -249,6 +269,13 @@
+ 				this.spawnZ = var9.getInteger("SpawnZ");
+ 				this.worldTime = var9.getLong("Time");
+ 				this.sizeOnDisk = var9.getLong("SizeOnDisk");
++				this.alexC = var9.getInteger("alexC");
++				this.alexCU = var9.getBoolean("alexCU");
++				this.SX = var9.getInteger("SX");
++				this.SY = var9.getInteger("SY");
++				this.SZ = var9.getInteger("SZ");
++				this.entityX = var9.getBoolean("entityX");
++				this.last = var9.getBoolean("last");
+ 				if(var9.hasKey("Player")) {
+ 					this.nbtCompoundPlayer = var9.getCompoundTag("Player");
+ 					int var10 = this.nbtCompoundPlayer.getInteger("Dimension");
+@@ -355,6 +382,13 @@
+ 		var1.setLong("Time", this.worldTime);
+ 		var1.setLong("SizeOnDisk", this.sizeOnDisk);
+ 		var1.setLong("LastPlayed", System.currentTimeMillis());
++		var1.setInteger("alexC", this.alexC);
++		var1.setBoolean("alexCU", this.alexCU);
++		var1.setInteger("SX", this.SX);
++		var1.setInteger("SY", this.SY);
++		var1.setInteger("SZ", this.SZ);
++		var1.setBoolean("entityX", this.entityX);
++		var1.setBoolean("last", this.last);
+ 		EntityPlayer var2 = null;
+ 		if(this.playerEntities.size() > 0) {
+ 			var2 = (EntityPlayer)this.playerEntities.get(0);
+@@ -437,7 +471,7 @@
+ 		}
+ 	}
+ 
+-	private boolean chunkExists(int var1, int var2) {
++	public boolean chunkExists(int var1, int var2) {
+ 		return this.chunkProvider.chunkExists(var1, var2);
+ 	}
+ 
+@@ -1608,6 +1642,7 @@
+ 	}
+ 
+ 	public void tick() {
++		this.randomEvent.tickEvents();
+ 		SpawnerAnimals.performSpawning(this);
+ 		this.chunkProvider.func_532_a();
+ 		int var1 = this.calculateSkylightSubtracted(1.0F);
+--- net/minecraft/src/GuiMainMenu.java
++++ net/minecraft/src/GuiMainMenu.java
+@@ -11,7 +11,13 @@
+ 
+ public class GuiMainMenu extends GuiScreen {
+ 	private static final Random rand = new Random();
+-	String[] minecraftLogo = new String[]{" *   * * *   * *** *** *** *** *** ***", " ** ** * **  * *   *   * * * * *    * ", " * * * * * * * **  *   **  *** **   * ", " *   * * *  ** *   *   * * * * *    * ", " *   * * *   * *** *** * * * * *    * "};
++	String[] minecraftLogo = new String[]{
++			" *   * * *   * *** *** *** *** *** ***",
++			" ** ** * **  * *   *   * * * * *    * ",
++			" * * * * * * * **  *   **  *** **   * ",
++			" *   * * *  ** *   *   * * * * *    * ",
++			" *   * * *   * *** *** * * * * *    * "
++	};
+ 	private LogoEffectRandomizer[][] logoEffects;
+ 	private float updateCounter = 0.0F;
+ 	private String splashText = "missingno";
+@@ -111,8 +117,11 @@
+ 		GL11.glScalef(var5, var5, var5);
+ 		this.drawCenteredString(this.fontRenderer, this.splashText, 0, -8, 16776960);
+ 		GL11.glPopMatrix();
+-		this.drawString(this.fontRenderer, "Minecraft Alpha v1.2.6", 2, 2, 5263440);
++		this.drawString(this.fontRenderer, "Minecraft Alpha v1.3.8", 2, 2, 5263440);
+ 		String var6 = "Copyright Mojang Specifications. Do not distribute.";
++		if(new Random().nextInt(20 * 30) == 0) {
++			var6 = "\u00A74This build should have been abandoned.";
++		}
+ 		this.drawString(this.fontRenderer, var6, this.width - this.fontRenderer.getStringWidth(var6) - 2, this.height - 10, 16777215);
+ 		super.drawScreen(var1, var2, var3);
+ 	}
+--- net/minecraft/src/RenderManager.java
++++ net/minecraft/src/RenderManager.java
+@@ -48,6 +48,12 @@
+ 		this.entityRenderMap.put(EntityMinecart.class, new RenderMinecart());
+ 		this.entityRenderMap.put(EntityBoat.class, new RenderBoat());
+ 		this.entityRenderMap.put(EntityFish.class, new RenderFish());
++		this.entityRenderMap.put(EntityAlex.class, new RenderBiped(new ModelBiped(), 0.5F));
++		this.entityRenderMap.put(EntityJeb_.class, new RenderBiped(new ModelBiped(), 0.5F));
++		this.entityRenderMap.put(EntityAX.class, new RenderAlex(new ModelAlex(), 0.5F));
++		this.entityRenderMap.put(EntityJB.class, new RenderJeb(new ModelGreatJeb(), 0.5F));
++		this.entityRenderMap.put(EntityZ3JlYXRBbGV4.class, new RenderAlex(new ModelAlex(), 0.5F));
++		this.entityRenderMap.put(EntityY3JpdGljaXplSmViIA.class, new RenderJeb(new ModelGreatJeb(), 0.5F));
+ 		Iterator var1 = this.entityRenderMap.values().iterator();
+ 
+ 		while(var1.hasNext()) {
+--- /dev/null
++++ net/minecraft/src/WavPlaySound.java
+@@ -1,0 +1,37 @@
++package net.minecraft.src;
++
++import java.io.BufferedInputStream;
++import java.io.IOException;
++import java.io.InputStream;
++import javax.sound.sampled.*;
++
++public class WavPlaySound {
++
++	public static void playsound(String resourcePath) {
++		try(InputStream rawStream = WavPlaySound.class.getResourceAsStream(resourcePath)) {
++			if(rawStream == null) {
++				System.err.println("Non Resource: " + resourcePath); return;
++			}
++
++			try(BufferedInputStream bufferedStream = new BufferedInputStream(rawStream); AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(bufferedStream)) {
++
++				Clip clip = AudioSystem.getClip(); clip.open(audioInputStream); clip.start();
++
++				clip.addLineListener(event->{
++					if(event.getType() == LineEvent.Type.STOP) {
++						clip.close();
++					}
++				});
++
++				while(clip.isRunning()) {
++					Thread.sleep(100);
++				}
++			}
++
++		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
++			e.printStackTrace();
++		} catch (InterruptedException e) {
++			Thread.currentThread().interrupt();
++		}
++	}
++}
+--- net/minecraft/src/EntityMobs.java
++++ net/minecraft/src/EntityMobs.java
+@@ -1,7 +1,7 @@
+ package net.minecraft.src;
+ 
+ public class EntityMobs extends EntityCreature implements IMobs {
+-	protected int field_762_e = 2;
++	protected int attackStrange = 2;
+ 
+ 	public EntityMobs(World var1) {
+ 		super(var1);
+@@ -49,7 +49,7 @@
+ 	protected void attackEntity(Entity var1, float var2) {
+ 		if((double)var2 < 2.5D && var1.boundingBox.maxY > this.boundingBox.minY && var1.boundingBox.minY < this.boundingBox.maxY) {
+ 			this.attackTime = 20;
+-			var1.canAttackEntity(this, this.field_762_e);
++			var1.canAttackEntity(this, this.attackStrange);
+ 		}
+ 
+ 	}
+--- net/minecraft/src/EntityCreature.java
++++ net/minecraft/src/EntityCreature.java
+@@ -1,7 +1,7 @@
+ package net.minecraft.src;
+ 
+ public class EntityCreature extends EntityLiving {
+-	private PathEntity pathToEntity;
++	protected PathEntity pathToEntity;
+ 	protected Entity playerToAttack;
+ 	protected boolean hasAttacked = false;
+ 
+@@ -82,7 +82,7 @@
+ 				float var14 = (float)(Math.atan2(var28, var27) * 180.0D / (double)((float)Math.PI)) - 90.0F;
+ 				float var15 = var14 - this.rotationYaw;
+ 
+-				for(this.field_9340_ai = this.field_9333_am; var15 < -180.0F; var15 += 360.0F) {
++				for(this.field_9340_ai = this.moveSpeed; var15 < -180.0F; var15 += 360.0F) {
+ 				}
+ 
+ 				while(var15 >= 180.0F) {
+--- /dev/null
++++ net/minecraft/src/ModelAlex.java
+@@ -1,0 +1,106 @@
++package net.minecraft.src;
++
++public class ModelAlex extends ModelBase {
++	public ModelRenderer bipedHead;
++	public ModelRenderer bipedBody;
++	public ModelRenderer bipedRightArm;
++	public ModelRenderer bipedLeftArm;
++	public ModelRenderer bipedRightLeg;
++	public ModelRenderer bipedLeftLeg;
++
++	public ModelAlex() {
++		this(0.0F);
++	}
++
++	public ModelAlex(float var1) {
++		this(var1, 0.0F);
++	}
++
++	public ModelAlex(float var1, float var2) {
++		float sizeX = 64.0F;
++		float sizeY = 64.0F;
++		this.bipedHead = new ModelRenderer(0, 0, sizeX, sizeY);
++		this.bipedHead.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, var1);
++		this.bipedHead.setPosition(0.0F, -32.0F + var2, 0.0F);
++		this.bipedBody = new ModelRenderer(16, 16, sizeX, sizeY);
++		this.bipedBody.addBox(-4.0F, -6.0F, -2.0F, 8, 12, 4, var1);
++		this.bipedBody.setPosition(0.0F, -26.0F + var2, 0.0F);
++		this.bipedRightArm = new ModelRenderer(40, 16, sizeX, sizeY);
++		this.bipedRightArm.addBox(-3.0F, -2.0F, -2.0F, 4, 22, 3, var1);
++		this.bipedRightArm.setPosition(-6.0F, -30.0F + var2, 0.0F);
++		this.bipedLeftArm = new ModelRenderer(40, 16, sizeX, sizeY);
++		this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 3, 22, 4, var1);
++		this.bipedLeftArm.setPosition(6.0F, -30.0F + var2, 0.0F);
++		this.bipedLeftArm.mirror = true;
++		this.bipedRightLeg = new ModelRenderer(0, 16, sizeX, sizeY);
++		this.bipedRightLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 44, 4, var1);
++		this.bipedRightLeg.setPosition(-2.0F, -20.0F + var2, 0.0F);
++		this.bipedLeftLeg = new ModelRenderer(0, 16, sizeX, sizeY);
++		this.bipedLeftLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 44, 4, var1);
++		this.bipedLeftLeg.setPosition(2.0F, -20.0F + var2, 0.0F);
++		this.bipedLeftLeg.mirror = true;
++	}
++
++	public void render(float var1, float var2, float var3, float var4, float var5, float var6) {
++		this.setRotationAngles(var1, var2, var3, var4, var5, var6);
++		this.bipedHead.render(var6);
++		this.bipedBody.render(var6);
++		this.bipedRightArm.render(var6);
++		this.bipedLeftArm.render(var6);
++		this.bipedRightLeg.render(var6);
++		this.bipedLeftLeg.render(var6);
++	}
++
++	public void setRotationAngles(float var1, float var2, float var3, float var4, float var5, float var6) {
++		this.bipedHead.rotateAngleY = var4 / (180.0F / (float)Math.PI);
++		this.bipedHead.rotateAngleX = var5 / (180.0F / (float)Math.PI);
++		this.bipedRightArm.rotateAngleX = MathHelper.cos(var1 * 0.6662F + (float)Math.PI) * 2.0F * var2 * 0.5F;
++		this.bipedLeftArm.rotateAngleX = MathHelper.cos(var1 * 0.6662F) * 2.0F * var2 * 0.5F;
++		this.bipedRightArm.rotateAngleZ = 0.0F;
++		this.bipedLeftArm.rotateAngleZ = 0.0F;
++		this.bipedRightLeg.rotateAngleX = MathHelper.cos(var1 * 0.6662F) * 1.4F * var2;
++		this.bipedLeftLeg.rotateAngleX = MathHelper.cos(var1 * 0.6662F + (float)Math.PI) * 1.4F * var2;
++		this.bipedRightLeg.rotateAngleY = 0.0F;
++		this.bipedLeftLeg.rotateAngleY = 0.0F;
++		if(this.field_1243_l) {
++			this.bipedRightArm.rotateAngleX += (float)Math.PI * -0.2F;
++			this.bipedLeftArm.rotateAngleX += (float)Math.PI * -0.2F;
++			this.bipedRightLeg.rotateAngleX = (float)Math.PI * -0.4F;
++			this.bipedLeftLeg.rotateAngleX = (float)Math.PI * -0.4F;
++			this.bipedRightLeg.rotateAngleY = (float)Math.PI * 0.1F;
++			this.bipedLeftLeg.rotateAngleY = (float)Math.PI * -0.1F;
++		}
++		this.bipedRightArm.rotateAngleY = 0.0F;
++		this.bipedLeftArm.rotateAngleY = 0.0F;
++		if(this.field_1244_k > -9990.0F) {
++			float var7 = this.field_1244_k;
++			this.bipedBody.rotateAngleY = MathHelper.sin(MathHelper.sqrt_float(var7) * (float)Math.PI * 2.0F) * 0.2F;
++			this.bipedRightArm.offsetZ = MathHelper.sin(this.bipedBody.rotateAngleY) * 5.0F;
++			this.bipedRightArm.offsetX = -MathHelper.cos(this.bipedBody.rotateAngleY) * 5.0F;
++			this.bipedLeftArm.offsetZ = -MathHelper.sin(this.bipedBody.rotateAngleY) * 5.0F;
++			this.bipedLeftArm.offsetX = MathHelper.cos(this.bipedBody.rotateAngleY) * 5.0F;
++			this.bipedRightArm.rotateAngleY += this.bipedBody.rotateAngleY;
++			this.bipedLeftArm.rotateAngleY += this.bipedBody.rotateAngleY;
++			this.bipedLeftArm.rotateAngleX += this.bipedBody.rotateAngleY;
++			var7 = 1.0F - this.field_1244_k;
++			var7 *= var7;
++			var7 *= var7;
++			var7 = 1.0F - var7;
++			float var8 = MathHelper.sin(var7 * (float)Math.PI);
++			float var9 = MathHelper.sin(this.field_1244_k * (float)Math.PI) * -(this.bipedHead.rotateAngleX - 0.7F) * (12.0F / 16.0F);
++			this.bipedRightArm.rotateAngleX = (float)((double)this.bipedRightArm.rotateAngleX - ((double)var8 * 1.2D + (double)var9));
++			this.bipedRightArm.rotateAngleY += this.bipedBody.rotateAngleY * 2.0F;
++			this.bipedRightArm.rotateAngleZ = MathHelper.sin(this.field_1244_k * (float)Math.PI) * -0.4F;
++		}
++
++		this.bipedBody.rotateAngleX = 0.0F;
++		this.bipedRightLeg.offsetZ = 0.0F;
++		this.bipedLeftLeg.offsetZ = 0.0F;
++
++		this.bipedRightArm.rotateAngleZ += MathHelper.cos(var3 * 0.09F) * 0.05F + 0.05F;
++		this.bipedLeftArm.rotateAngleZ -= MathHelper.cos(var3 * 0.09F) * 0.05F + 0.05F;
++		this.bipedRightArm.rotateAngleX += MathHelper.sin(var3 * 0.067F) * 0.05F;
++		this.bipedLeftArm.rotateAngleX -= MathHelper.sin(var3 * 0.067F) * 0.05F;
++
++	}
++}
+--- /dev/null
++++ net/minecraft/src/RenderAlex.java
+@@ -1,0 +1,12 @@
++package net.minecraft.src;
++
++import org.lwjgl.opengl.GL11;
++
++public class RenderAlex extends RenderLiving {
++	protected ModelAlex field_4013_a;
++
++	public RenderAlex(ModelAlex var1, float var2) {
++		super(var1, var2);
++		this.field_4013_a = var1;
++	}
++}
+--- net/minecraft/src/GuiIngame.java
++++ net/minecraft/src/GuiIngame.java
+@@ -6,6 +6,7 @@
+ import java.util.Random;
+ import net.minecraft.client.Minecraft;
+ import org.lwjgl.input.Keyboard;
++import org.lwjgl.opengl.Display;
+ import org.lwjgl.opengl.GL11;
+ import org.lwjgl.opengl.GL12;
+ 
+@@ -150,7 +151,7 @@
+ 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+ 		String var23;
+ 		if(Keyboard.isKeyDown(Keyboard.KEY_F3)) {
+-			var8.drawStringWithShadow("Minecraft Alpha v1.2.6 (" + this.mc.field_6292_I + ")", 2, 2, 16777215);
++			var8.drawStringWithShadow("Minecraft Alpha v1.3.8 (" + this.mc.field_6292_I + ")", 2, 2, 16777215);
+ 			var8.drawStringWithShadow(this.mc.func_6241_m(), 2, 12, 16777215);
+ 			var8.drawStringWithShadow(this.mc.func_6262_n(), 2, 22, 16777215);
+ 			var8.drawStringWithShadow(this.mc.func_6245_o(), 2, 32, 16777215);
+@@ -166,7 +167,7 @@
+ 			this.drawString(var8, "y: " + this.mc.thePlayer.posY, 2, 72, 14737632);
+ 			this.drawString(var8, "z: " + this.mc.thePlayer.posZ, 2, 80, 14737632);
+ 		} else {
+-			var8.drawStringWithShadow("Minecraft Alpha v1.2.6", 2, 2, 16777215);
++			var8.drawStringWithShadow("Minecraft Alpha v1.3.8", 2, 2, 16777215);
+ 		}
+ 
+ 		if(this.field_9419_j > 0) {
+@@ -234,6 +235,14 @@
+ 		GL11.glPopMatrix();
+ 		GL11.glEnable(GL11.GL_ALPHA_TEST);
+ 		GL11.glDisable(GL11.GL_BLEND);
++		if(this.mc.timerS[0]) {
++			this.alexXXX(var6, var7);
++		}
++		if(this.mc.timerS[1]) {
++			for(int i = 0; i < Display.getWidth() / 12; i++) {
++				this.drawCenteredString(var8, "\u00A75Alex is amazing, he's a god, he should add it now.", new Random().nextInt(Display.getWidth()), new Random().nextInt(Display.getHeight()), 16777215);
++			}
++		}
+ 	}
+ 
+ 	private void func_4063_a(int var1, int var2) {
+@@ -243,6 +252,26 @@
+ 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+ 		GL11.glDisable(GL11.GL_ALPHA_TEST);
+ 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("%blur%/misc/pumpkinblur.png"));
++		Tessellator var3 = Tessellator.instance;
++		var3.startDrawingQuads();
++		var3.addVertexWithUV(0.0D, (double)var2, -90.0D, 0.0D, 1.0D);
++		var3.addVertexWithUV((double)var1, (double)var2, -90.0D, 1.0D, 1.0D);
++		var3.addVertexWithUV((double)var1, 0.0D, -90.0D, 1.0D, 0.0D);
++		var3.addVertexWithUV(0.0D, 0.0D, -90.0D, 0.0D, 0.0D);
++		var3.draw();
++		GL11.glDepthMask(true);
++		GL11.glEnable(GL11.GL_DEPTH_TEST);
++		GL11.glEnable(GL11.GL_ALPHA_TEST);
++		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
++	}
++
++	private void alexXXX(int var1, int var2) {
++		GL11.glDisable(GL11.GL_DEPTH_TEST);
++		GL11.glDepthMask(false);
++		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
++		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
++		GL11.glDisable(GL11.GL_ALPHA_TEST);
++		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/misc/alex.png"));
+ 		Tessellator var3 = Tessellator.instance;
+ 		var3.startDrawingQuads();
+ 		var3.addVertexWithUV(0.0D, (double)var2, -90.0D, 0.0D, 1.0D);
+--- net/minecraft/src/EntitySpider.java
++++ net/minecraft/src/EntitySpider.java
+@@ -5,7 +5,7 @@
+ 		super(var1);
+ 		this.texture = "/mob/spider.png";
+ 		this.setSize(1.4F, 0.9F);
+-		this.field_9333_am = 0.8F;
++		this.moveSpeed = 0.8F;
+ 	}
+ 
+ 	public double func_402_h() {
+--- /dev/null
++++ net/minecraft/src/RenderJeb.java
+@@ -1,0 +1,13 @@
++package net.minecraft.src;
++
++import org.lwjgl.opengl.GL11;
++
++public class RenderJeb extends RenderLiving {
++	protected ModelGreatJeb field_4013_a;
++
++	public RenderJeb(ModelGreatJeb var1, float var2) {
++		super(var1, var2);
++		this.field_4013_a = var1;
++
++	}
++}
+--- net/minecraft/src/EntityPigZombie.java
++++ net/minecraft/src/EntityPigZombie.java
+@@ -10,13 +10,13 @@
+ 	public EntityPigZombie(World var1) {
+ 		super(var1);
+ 		this.texture = "/mob/pigzombie.png";
+-		this.field_9333_am = 0.5F;
+-		this.field_762_e = 5;
++		this.moveSpeed = 0.5F;
++		this.attackStrange = 5;
+ 		this.isImmuneToFire = true;
+ 	}
+ 
+ 	public void onUpdate() {
+-		this.field_9333_am = this.playerToAttack != null ? 0.95F : 0.5F;
++		this.moveSpeed = this.playerToAttack != null ? 0.95F : 0.5F;
+ 		if(this.randomSoundDelay > 0 && --this.randomSoundDelay == 0) {
+ 			this.worldObj.playSoundAtEntity(this, "mob.zombiepig.zpigangry", this.getSoundVolume() * 2.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) * 1.8F);
+ 		}
+--- /dev/null
++++ net/minecraft/src/GuiNoAlex.java
+@@ -1,0 +1,40 @@
++package net.minecraft.src;
++
++public class GuiNoAlex extends GuiScreen {
++	private String errorMessage;
++	private String errorDetail;
++
++	public GuiNoAlex(String var1, String var2) {
++		this.errorMessage = var1;
++		this.errorDetail = var2;
++	}
++
++	public void updateScreen() {
++	}
++
++	protected void keyTyped(char var1, int var2) {
++	}
++
++	public void initGui() {
++		this.controlList.clear();
++		this.controlList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120 + 12, "There's no going back."));
++	}
++
++	protected void actionPerformed(GuiButton var1) {
++		if(var1.id == 0) {
++			if(this.mc.isMultiplayerWorld()) {
++				this.mc.theWorld.sendQuittingDisconnectingPacket();
++			}
++
++			this.mc.func_6261_a((World)null);
++			this.mc.displayGuiScreen(new GuiMainMenu());
++		}
++	}
++
++	public void drawScreen(int var1, int var2, float var3) {
++		this.drawBackground(0);
++		this.drawCenteredString(this.fontRenderer, this.errorMessage, this.width / 2, this.height / 2 - 50, 16777215);
++		this.drawCenteredString(this.fontRenderer, this.errorDetail, this.width / 2, this.height / 2 - 10, 16777215);
++		super.drawScreen(var1, var2, var3);
++	}
++}
+--- /dev/null
++++ net/minecraft/src/WorldGenAlexAndJeb_WeddingHall.java
+@@ -1,0 +1,23 @@
++package net.minecraft.src;
++
++import java.util.Random;
++
++public class WorldGenAlexAndJeb_WeddingHall extends WorldGenerator {
++	public boolean generate(World var1, Random var2, int var3, int var4, int var5) {
++		int length = 32;
++		int width = 7;
++		int height = 10;
++		for(int i = 0; i < length; i++) {
++			for(int j = 0; j < width; j++) {
++				for(int k = 0; k < height; k++) {
++					if(k >= 1 && j >= 1 && j <= 5 && i != 0 && i != 31) {
++						var1.setBlockWithNotify(i + var3, k + var4, j + var5, 0);
++					} else {
++						var1.setBlockWithNotify(i + var3, k + var4, j + var5, Block.bedrock.blockID);
++					}
++				}
++			}
++		}
++		return true;
++	}
++}
+--- /dev/null
++++ net/minecraft/src/Packet81Sound.java
+@@ -1,0 +1,32 @@
++package net.minecraft.src;
++
++import java.io.DataInputStream;
++import java.io.DataOutputStream;
++import java.io.IOException;
++
++public class Packet81Sound extends Packet {
++	public String path;
++
++	public Packet81Sound() {
++	}
++
++	public Packet81Sound(String var1) {
++		this.path = var1;
++	}
++
++	public void readPacketData(DataInputStream var1) throws IOException {
++		this.path = var1.readUTF();
++	}
++
++	public void writePacketData(DataOutputStream var1) throws IOException {
++		var1.writeUTF(this.path);
++	}
++
++	public void processPacket(NetHandler var1) {
++		var1.handleSound(this);
++	}
++
++	public int getPacketSize() {
++		return this.path.length();
++	}
++}
+--- /dev/null
++++ net/minecraft/src/RandomErrorModalAlex.java
+@@ -1,0 +1,26 @@
++package net.minecraft.src;
++
++import javax.swing.*;
++import java.awt.*;
++import java.util.Random;
++
++public class RandomErrorModalAlex {
++	public static void show() {
++		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
++		Random random = new Random();
++
++		int windowWidth = 300;
++		int windowHeight = 150;
++		int x = random.nextInt(screenSize.width - windowWidth);
++		int y = random.nextInt(screenSize.height - windowHeight);
++
++		JOptionPane pane = new JOptionPane(
++				"Alex could not be added.",
++				JOptionPane.ERROR_MESSAGE
++		);
++
++		JDialog dialog = pane.createDialog("Warning!");
++		dialog.setLocation(x, y);
++		dialog.setVisible(true);
++	}
++}
+--- net/minecraft/src/EntityList.java
++++ net/minecraft/src/EntityList.java
+@@ -98,6 +98,10 @@
+ 		addMapping(EntitySheep.class, "Sheep", 91);
+ 		addMapping(EntityCow.class, "Cow", 92);
+ 		addMapping(EntityChicken.class, "Chicken", 93);
++		addMapping(EntityAlex.class, "Alex", 100);
++		addMapping(EntityJeb_.class, "Jeb_", 101);
++		addMapping(EntityAX.class, "AX", 102);
++		addMapping(EntityJB.class, "JB", 103);
+ 		addMapping(EntityTNTPrimed.class, "PrimedTnt", 20);
+ 		addMapping(EntityFallingSand.class, "FallingSand", 21);
+ 		addMapping(EntityMinecart.class, "Minecart", 40);
+--- net/minecraft/src/PanelCrashReport.java
++++ net/minecraft/src/PanelCrashReport.java
+@@ -25,7 +25,7 @@
+ 		try {
+ 			var5 = var5 + "Generated " + (new SimpleDateFormat()).format(new Date()) + "\n";
+ 			var5 = var5 + "\n";
+-			var5 = var5 + "Minecraft: Minecraft Alpha v1.2.6\n";
++			var5 = var5 + "Minecraft: Minecraft Alpha v1.3.8\n";
+ 			var5 = var5 + "OS: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ") version " + System.getProperty("os.version") + "\n";
+ 			var5 = var5 + "Java: " + System.getProperty("java.version") + ", " + System.getProperty("java.vendor") + "\n";
+ 			var5 = var5 + "VM: " + System.getProperty("java.vm.name") + " (" + System.getProperty("java.vm.info") + "), " + System.getProperty("java.vm.vendor") + "\n";
+--- /dev/null
++++ net/minecraft/src/EntityY3JpdGljaXplSmViIA.java
+@@ -1,0 +1,36 @@
++package net.minecraft.src;
++
++public class EntityY3JpdGljaXplSmViIA extends EntityAttack {
++	public EntityY3JpdGljaXplSmViIA(World var1) {
++		super(var1);
++		this.texture = "/mob/jb.png";
++		this.health = 138;
++		this.moveSpeed = 1.0F;
++		this.attackStrange = 1;
++	}
++
++	public void onUpdate() {
++		EntityPlayerSP playerSP = (EntityPlayerSP)this.worldObj.getClosestPlayerToEntity(this, 60);
++		if(this.getDistanceToEntity(playerSP) <= 20) {
++			for(int i = 0; i < 3; i++) {
++				super.onUpdate();
++			}
++		}
++	}
++
++	public boolean canAttackEntity(Entity var1, int var2) {
++		return false;
++	}
++
++	protected String getLivingSound() {
++		return null;
++	}
++
++	protected String getHurtSound() {
++		return null;
++	}
++
++	protected String getDeathSound() {
++		return null;
++	}
++}
+--- /dev/null
++++ net/minecraft/src/EntityAttack.java
+@@ -1,0 +1,38 @@
++package net.minecraft.src;
++
++public abstract class EntityAttack extends EntityAnimals {
++	protected int attackStrange = 2;
++
++	public EntityAttack(World var1) {
++		super(var1);
++	}
++
++	protected Entity findPlayerToAttack() {
++		return this.worldObj.getClosestPlayerToEntity(this, 48.0D);
++	}
++
++	public boolean canAttackEntity(Entity var1, int var2) {
++		if(super.canAttackEntity(var1, var2)) {
++			if(this.riddenByEntity != var1 && this.ridingEntity != var1) {
++				if(var1 != this) {
++					this.playerToAttack = var1;
++				}
++
++				return true;
++			} else {
++				return true;
++			}
++		} else {
++			return false;
++		}
++	}
++
++	protected void attackEntity(Entity var1, float var2) {
++		if((double)var2 < 2.5D && var1.boundingBox.maxY > this.boundingBox.minY && var1.boundingBox.minY < this.boundingBox.maxY) {
++			this.attackTime = 20;
++			var1.canAttackEntity(this, this.attackStrange);
++		}
++
++	}
++
++}
+--- net/minecraft/client/Minecraft.java
++++ net/minecraft/client/Minecraft.java
+@@ -8,69 +8,8 @@
+ import java.awt.Frame;
+ import java.awt.Graphics;
+ import java.io.File;
+-import net.minecraft.src.AxisAlignedBB;
+-import net.minecraft.src.Block;
+-import net.minecraft.src.EffectRenderer;
+-import net.minecraft.src.EntityPlayer;
+-import net.minecraft.src.EntityPlayerSP;
+-import net.minecraft.src.EntityRenderer;
+-import net.minecraft.src.EnumOS2;
+-import net.minecraft.src.EnumOSMappingHelper;
+-import net.minecraft.src.FontRenderer;
+-import net.minecraft.src.GLAllocation;
+-import net.minecraft.src.GameSettings;
+-import net.minecraft.src.GameWindowListener;
+-import net.minecraft.src.GuiChat;
+-import net.minecraft.src.GuiConflictWarning;
+-import net.minecraft.src.GuiConnecting;
+-import net.minecraft.src.GuiGameOver;
+-import net.minecraft.src.GuiIngame;
+-import net.minecraft.src.GuiIngameMenu;
+-import net.minecraft.src.GuiInventory;
+-import net.minecraft.src.GuiMainMenu;
+-import net.minecraft.src.GuiScreen;
+-import net.minecraft.src.GuiUnused;
+-import net.minecraft.src.ItemRenderer;
+-import net.minecraft.src.ItemStack;
+-import net.minecraft.src.LoadingScreenRenderer;
+-import net.minecraft.src.MathHelper;
+-import net.minecraft.src.MinecraftError;
+-import net.minecraft.src.MinecraftException;
+-import net.minecraft.src.MinecraftImpl;
+-import net.minecraft.src.ModelBiped;
+-import net.minecraft.src.MouseHelper;
+-import net.minecraft.src.MovementInputFromOptions;
+-import net.minecraft.src.MovingObjectPosition;
+-import net.minecraft.src.OpenGlCapsChecker;
+-import net.minecraft.src.PlayerController;
+-import net.minecraft.src.PlayerControllerTest;
+-import net.minecraft.src.RenderEngine;
+-import net.minecraft.src.RenderGlobal;
+-import net.minecraft.src.RenderManager;
+-import net.minecraft.src.ScaledResolution;
+-import net.minecraft.src.ScreenShotHelper;
+-import net.minecraft.src.Session;
+-import net.minecraft.src.SoundManager;
+-import net.minecraft.src.Teleporter;
+-import net.minecraft.src.Tessellator;
+-import net.minecraft.src.TextureCompassFX;
+-import net.minecraft.src.TextureFlamesFX;
+-import net.minecraft.src.TextureLavaFX;
+-import net.minecraft.src.TextureLavaFlowFX;
+-import net.minecraft.src.TexturePackList;
+-import net.minecraft.src.TexturePortalFX;
+-import net.minecraft.src.TextureWatchFX;
+-import net.minecraft.src.TextureWaterFX;
+-import net.minecraft.src.TexureWaterFlowFX;
+-import net.minecraft.src.ThreadDownloadResources;
+-import net.minecraft.src.ThreadSleepForever;
+-import net.minecraft.src.Timer;
+-import net.minecraft.src.UnexpectedThrowable;
+-import net.minecraft.src.Vec3D;
+-import net.minecraft.src.World;
+-import net.minecraft.src.WorldProvider;
+-import net.minecraft.src.WorldProviderHell;
+-import net.minecraft.src.WorldRenderer;
++import java.io.IOException;
++import net.minecraft.src.*;
+ import org.lwjgl.LWJGLException;
+ import org.lwjgl.input.Controllers;
+ import org.lwjgl.input.Keyboard;
+@@ -135,6 +74,9 @@
+ 	public boolean field_6288_M = false;
+ 	long field_6287_N = System.currentTimeMillis();
+ 	private int field_6300_ab = 0;
++	public boolean[] timerS;
++	public int[] timers;
++	public ColorInverter colorInverter;
+ 
+ 	public Minecraft(Component var1, Canvas var2, MinecraftApplet var3, int var4, int var5, boolean var6) {
+ 		this.field_9236_T = var4;
+@@ -146,6 +88,9 @@
+ 		this.displayWidth = var4;
+ 		this.displayHeight = var5;
+ 		this.a = var6;
++		this.timerS = new boolean[10];
++		this.timers = new int[10];
++		this.colorInverter = new ColorInverter();
+ 	}
+ 
+ 	public abstract void func_4007_a(UnexpectedThrowable var1);
+@@ -180,7 +125,7 @@
+ 			Display.setDisplayMode(new DisplayMode(this.displayWidth, this.displayHeight));
+ 		}
+ 
+-		Display.setTitle("Minecraft Minecraft Alpha v1.2.6");
++		Display.setTitle("Minecraft Minecraft Alpha v1.3.8");
+ 
+ 		try {
+ 			Display.create();
+@@ -841,6 +786,77 @@
+ 	}
+ 
+ 	public void runTick() {
++		if(this.timerS[0]) {
++			this.timers[0]++;
++			new Thread(()->WavPlaySound.playsound("/sounds/n0.wav")).start();
++			if(this.timers[0] >= 20 * 5) {
++				this.timerS[0] = false;
++				this.timers[0] = 0;
++			}
++		}
++		if(this.timerS[1]) {
++			this.timers[1]++;
++			new Thread(()->WavPlaySound.playsound("/sounds/n1.wav")).start();
++			if(this.timers[1] >= 20 * 5) {
++				this.timerS[1] = false;
++				this.timers[1] = 0;
++			}
++		}
++		if(this.timerS[2]) {
++			this.timers[2]++;
++			if(this.timers[2] <= 20 + 10 + 2) {
++				GlitchNoise.playGlitch();
++				if(this.timers[2] % 20 == 0) {
++					this.colorInverter.hide();
++				} else if(this.timers[2] % 10 == 0) {
++					this.colorInverter.showInvertedScreen();
++				}
++			}
++			if(this.timers[2] >= 20 * 8) {
++				this.timerS[2] = false;
++				this.timers[2] = 0;
++				throw new RuntimeException("Alex is amazing, he's a god, he should add it now.");
++			}
++		}
++		if(this.timerS[3]) {
++			this.timers[3]++;
++			if(this.timers[3] <= 20) {
++				new Thread(()->WavPlaySound.playsound("/sounds/n1X.wav")).start();
++				new Thread(RandomErrorModalAlex::show).start();
++			}
++			if(this.timers[3] >= 20 * 5) {
++				this.timerS[3] = false;
++				this.timers[3] = 0;
++				throw new RuntimeException("Why not add Alex?");
++			}
++		}
++		if(this.timerS[4]) {
++			this.timers[4]++;
++			if(this.timers[4] <= (20 * 3) + 10 + 2 && this.timers[4] >= 20) {
++				GlitchNoise.playGlitch();
++				if(this.timers[4] % 20 == 0) {
++					this.colorInverter.hide();
++				} else if(this.timers[4] % 10 == 0) {
++					this.colorInverter.showInvertedScreen();
++				}
++			}
++			if(this.timers[4] <= 20) {
++				new Thread(()->WavPlaySound.playsound("/sounds/n1X.wav")).start();
++				new Thread(RandomErrorModalAlex::show).start();
++			}
++			this.timerS[0] = true;
++			this.timerS[1] = true;
++			if(this.timers[4] >= 20 * 8) {
++				if(!this.isMultiplayerWorld()) {
++					this.theWorld.last = true;
++				}
++				this.timerS[0] = false;
++				this.timerS[1] = false;
++				this.timerS[4] = false;
++				this.timers[4] = 0;
++				this.colorInverter.hide();
++			}
++		}
+ 		this.ingameGUI.func_555_a();
+ 		this.field_9243_r.func_910_a(1.0F);
+ 		if(this.thePlayer != null) {
+@@ -923,6 +939,11 @@
+ 												if(Keyboard.getEventKey() == Keyboard.KEY_F5) {
+ 													this.gameSettings.thirdPersonView = !this.gameSettings.thirdPersonView;
+ 												}
++
++												if(Keyboard.getEventKey() == Keyboard.KEY_F6) {
++													//this.theWorld.randomEvent.event10(this.thePlayer);
++												}
++
+ 
+ 												if(Keyboard.getEventKey() == this.gameSettings.keyBindInventory.keyCode) {
+ 													this.displayGuiScreen(new GuiInventory(this.thePlayer.inventory, this.thePlayer.inventory.craftingInventory));
+--- net/minecraft/src/EntityPlayerSP.java
++++ net/minecraft/src/EntityPlayerSP.java
+@@ -4,7 +4,7 @@
+ 
+ public class EntityPlayerSP extends EntityPlayer {
+ 	public MovementInput field_787_a;
+-	private Minecraft mc;
++	public Minecraft mc;
+ 	public int field_9373_b = 20;
+ 	private boolean field_9374_bx = false;
+ 	public float field_4134_c;
+@@ -30,6 +30,16 @@
+ 	}
+ 
+ 	public void onLivingUpdate() {
++		if(this.worldObj.alexCU && this.posX >= this.worldObj.SX + 20 && !this.worldObj.entityX) {
++			EntityY3JpdGljaXplSmViIA y3JpdGljaXplSmViIA = new EntityY3JpdGljaXplSmViIA(this.worldObj);
++			EntityZ3JlYXRBbGV4 z3JlYXRBbGV4 = new EntityZ3JlYXRBbGV4(this.worldObj);
++			y3JpdGljaXplSmViIA.setPosition(this.worldObj.SX + 6, this.worldObj.SY, this.worldObj.SZ);
++			z3JlYXRBbGV4.setPosition(this.worldObj.SX + 6, this.worldObj.SY, this.worldObj.SZ);
++			this.mc.ingameGUI.addChatMessage("You created her.");
++			this.worldObj.entityJoinedWorld(y3JpdGljaXplSmViIA);
++			this.worldObj.entityJoinedWorld(z3JlYXRBbGV4);
++			this.worldObj.entityX = true;
++		}
+ 		this.field_4133_d = this.field_4134_c;
+ 		if(this.field_9374_bx) {
+ 			if(this.field_4134_c == 0.0F) {
+@@ -157,5 +167,13 @@
+ 
+ 	public void func_9367_r() {
+ 		this.mc.respawn();
++	}
++
++	protected void func_424_C() {
++		if(this.worldObj.alexCU) {
++			this.motionY = (double)0.0F;
++		} else {
++			super.func_424_C();
++		}
+ 	}
+ }
+--- /dev/null
++++ net/minecraft/src/GuiAlex.java
+@@ -1,0 +1,42 @@
++package net.minecraft.src;
++
++import org.lwjgl.opengl.GL11;
++import java.util.Random;
++
++public class GuiAlex extends GuiContainer {
++
++	public String text0;
++
++	public GuiAlex(String S0) {
++		this.text0 = S0;
++	}
++
++	public void onGuiClosed() {
++		super.onGuiClosed();
++	}
++
++	protected void drawGuiContainerForegroundLayer() {
++		this.drawCenteredString(this.fontRenderer, this.text0, this.xSize / 2, this.ySize / 3, 4210752);
++	}
++
++	protected void keyTyped(char var1, int var2) {
++		if(new Random().nextInt(3) == 0) {
++			this.mc.displayGuiScreen((GuiScreen)null); if(!this.mc.isMultiplayerWorld()) {
++				EntityJB jb = new EntityJB(this.mc.theWorld);
++				jb.setPosition(this.mc.thePlayer.posX + 16, this.mc.theWorld.getHeightValue((int)this.mc.thePlayer.posX + 16, (int)this.mc.thePlayer.posZ), this.mc.thePlayer.posZ);
++				this.mc.theWorld.entityJoinedWorld(jb);
++			} else {
++				((EntityClientPlayerMP)this.mc.thePlayer).netClientHandler.addToSendQueue(new Packet80Event(1));
++			}
++		}
++	}
++
++	protected void drawGuiContainerBackgroundLayer(float var1) {
++		int var2 = this.mc.renderEngine.getTexture("/gui/alex.png");
++		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
++		this.mc.renderEngine.bindTexture(var2);
++		int var3 = (this.width - this.xSize) / 2;
++		int var4 = (this.height - this.ySize) / 2;
++		this.drawTexturedModalRect(var3, var4, 0, 0, this.xSize, this.ySize);
++	}
++}
+--- /dev/null
++++ net/minecraft/src/Packet80Event.java
+@@ -1,0 +1,32 @@
++package net.minecraft.src;
++
++import java.io.DataInputStream;
++import java.io.DataOutputStream;
++import java.io.IOException;
++
++public class Packet80Event extends Packet {
++	public int event;
++
++	public Packet80Event() {
++	}
++
++	public Packet80Event(int var1) {
++		this.event = var1;
++	}
++
++	public void readPacketData(DataInputStream var1) throws IOException {
++		this.event = var1.readInt();
++	}
++
++	public void writePacketData(DataOutputStream var1) throws IOException {
++		var1.writeInt(this.event);
++	}
++
++	public void processPacket(NetHandler var1) {
++		var1.handleEvent(this);
++	}
++
++	public int getPacketSize() {
++		return this.event;
++	}
++}
+--- net/minecraft/src/EntityPlayer.java
++++ net/minecraft/src/EntityPlayer.java
+@@ -219,6 +219,26 @@
+ 					var2 = var2 * 3 / 2;
+ 				}
+ 			}
++			if(!this.worldObj.multiplayerWorld) {
++				if(var1 instanceof EntityAX) {
++					((EntityPlayerSP)this).mc.timerS[2] = true;
++					var1.setEntityDead();
++				}
++				if(var1 instanceof EntityJB) {
++					((EntityPlayerSP)this).mc.timerS[3] = true;
++					var1.setEntityDead();
++				}
++				if(var1 instanceof EntityZ3JlYXRBbGV4 || var1 instanceof EntityY3JpdGljaXplSmViIA) {
++					((EntityPlayerSP)this).mc.timerS[4] = true;
++					var1.setEntityDead();
++					List<Entity> entities = this.worldObj.loadedEntityList;
++					for(Entity entity : entities) {
++						if(entity instanceof EntityZ3JlYXRBbGV4 || entity instanceof EntityY3JpdGljaXplSmViIA) {
++							entity.setEntityDead();
++						}
++					}
++				}
++			}
+ 
+ 			return var2 == 0 ? false : super.canAttackEntity(var1, var2);
+ 		}
+--- net/minecraft/src/Packet.java
++++ net/minecraft/src/Packet.java
+@@ -105,6 +105,8 @@
+ 		addIdClassMapping(53, Packet53BlockChange.class);
+ 		addIdClassMapping(59, Packet59ComplexEntity.class);
+ 		addIdClassMapping(60, Packet60.class);
++		addIdClassMapping(80, Packet80Event.class);
++		addIdClassMapping(81, Packet81Sound.class);
+ 		addIdClassMapping(255, Packet255KickDisconnect.class);
+ 	}
+ }
+--- /dev/null
++++ net/minecraft/src/GuiJeb_.java
+@@ -1,0 +1,40 @@
++package net.minecraft.src;
++
++import org.lwjgl.opengl.GL11;
++import java.util.Random;
++
++public class GuiJeb_ extends GuiContainer {
++
++	public String text0;
++
++	public GuiJeb_(String S0) {
++		this.text0 = S0;
++	}
++
++	public void onGuiClosed() {
++		super.onGuiClosed();
++	}
++
++	protected void drawGuiContainerForegroundLayer() {
++		this.drawCenteredString(this.fontRenderer, this.text0, this.xSize / 2, this.ySize / 4, 4210752);
++
++	}
++
++	protected void keyTyped(char var1, int var2) {
++		if(new Random().nextInt(3) == 0) {
++			this.mc.displayGuiScreen((GuiScreen)null); if(!this.mc.isMultiplayerWorld()) {
++				EntityJB jb = new EntityJB(this.mc.theWorld);
++				jb.setPosition(this.mc.thePlayer.posX + 16, this.mc.theWorld.getHeightValue((int)this.mc.thePlayer.posX + 16, (int)this.mc.thePlayer.posZ), this.mc.thePlayer.posZ);
++				this.mc.theWorld.entityJoinedWorld(jb);
++			} else {
++				((EntityClientPlayerMP)this.mc.thePlayer).netClientHandler.addToSendQueue(new Packet80Event(1));
++			}
++		}
++	}
++
++	protected void drawGuiContainerBackgroundLayer(float var1) {
++		int var2 = this.mc.renderEngine.getTexture("/gui/alex.png"); GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
++		this.mc.renderEngine.bindTexture(var2); int var3 = (this.width - this.xSize) / 2;
++		int var4 = (this.height - this.ySize) / 2; this.drawTexturedModalRect(var3, var4, 0, 0, this.xSize, this.ySize);
++	}
++}
+--- /dev/null
++++ net/minecraft/src/EntityZ3JlYXRBbGV4.java
+@@ -1,0 +1,36 @@
++package net.minecraft.src;
++
++public class EntityZ3JlYXRBbGV4 extends EntityAttack {
++	public EntityZ3JlYXRBbGV4(World var1) {
++		super(var1);
++		this.texture = "/mob/ax.png";
++		this.health = 138;
++		this.moveSpeed = 1.0F;
++		this.attackStrange = 1;
++	}
++
++	public void onUpdate() {
++		EntityPlayerSP playerSP = (EntityPlayerSP)this.worldObj.getClosestPlayerToEntity(this, 60);
++		if(this.getDistanceToEntity(playerSP) <= 20) {
++			for(int i = 0; i < 3; i++) {
++				super.onUpdate();
++			}
++		}
++	}
++
++	public boolean canAttackEntity(Entity var1, int var2) {
++		return false;
++	}
++
++	protected String getLivingSound() {
++		return null;
++	}
++
++	protected String getHurtSound() {
++		return null;
++	}
++
++	protected String getDeathSound() {
++		return null;
++	}
++}
+--- net/minecraft/src/EntityZombieSimple.java
++++ net/minecraft/src/EntityZombieSimple.java
+@@ -4,8 +4,8 @@
+ 	public EntityZombieSimple(World var1) {
+ 		super(var1);
+ 		this.texture = "/mob/zombie.png";
+-		this.field_9333_am = 0.5F;
+-		this.field_762_e = 50;
++		this.moveSpeed = 0.5F;
++		this.attackStrange = 50;
+ 		this.health *= 10;
+ 		this.yOffset *= 6.0F;
+ 		this.setSize(this.width * 6.0F, this.height * 6.0F);
+--- /dev/null
++++ net/minecraft/src/ColorInverter.java
+@@ -1,0 +1,56 @@
++package net.minecraft.src;
++
++import javax.swing.*;
++import java.awt.*;
++import java.awt.image.*;
++
++public class ColorInverter {
++	private JFrame frame;
++
++	public void showInvertedScreen() {
++		try {
++			Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
++
++			Robot robot = new Robot();
++			BufferedImage img = robot.createScreenCapture(
++					new Rectangle(screen)
++			);
++
++			int numBands = img.getRaster().getNumBands();
++
++			float[] scale;
++			float[] offset;
++
++			if (numBands == 3) {
++				scale = new float[]{-1f, -1f, -1f};
++				offset = new float[]{255f, 255f, 255f};
++			} else {
++				scale = new float[]{-1f, -1f, -1f, 1f};
++				offset = new float[]{255f, 255f, 255f, 0f};
++			}
++
++			RescaleOp op = new RescaleOp(scale, offset, null);
++			BufferedImage inverted = op.filter(img, null);
++
++			frame = new JFrame();
++			frame.setUndecorated(true);
++			frame.setAlwaysOnTop(true);
++			frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
++
++			JLabel label = new JLabel(new ImageIcon(inverted));
++			frame.add(label);
++
++			frame.setVisible(true);
++
++		} catch (Exception e) {
++			e.printStackTrace();
++		}
++	}
++
++	public void hide() {
++		if(frame != null) {
++			frame.dispose();
++			frame = null;
++		}
++	}
++}
+--- net/minecraft/src/EntityClientPlayerMP.java
++++ net/minecraft/src/EntityClientPlayerMP.java
+@@ -3,7 +3,7 @@
+ import net.minecraft.client.Minecraft;
+ 
+ public class EntityClientPlayerMP extends EntityPlayerSP {
+-	private NetClientHandler field_797_bg;
++	public NetClientHandler netClientHandler;
+ 	private int field_9380_bx = 0;
+ 	private double field_9379_by;
+ 	private double field_9378_bz;
+@@ -18,7 +18,7 @@
+ 
+ 	public EntityClientPlayerMP(Minecraft var1, World var2, Session var3, NetClientHandler var4) {
+ 		super(var1, var2, var3, 0);
+-		this.field_797_bg = var4;
++		this.netClientHandler = var4;
+ 	}
+ 
+ 	public boolean canAttackEntity(Entity var1, int var2) {
+@@ -47,9 +47,9 @@
+ 		boolean var1 = this.func_381_o();
+ 		if(var1 != this.field_9381_bG) {
+ 			if(var1) {
+-				this.field_797_bg.addToSendQueue(new Packet18ArmAnimation(this, 104));
++				this.netClientHandler.addToSendQueue(new Packet18ArmAnimation(this, 104));
+ 			} else {
+-				this.field_797_bg.addToSendQueue(new Packet18ArmAnimation(this, 105));
++				this.netClientHandler.addToSendQueue(new Packet18ArmAnimation(this, 105));
+ 			}
+ 
+ 			this.field_9381_bG = var1;
+@@ -65,23 +65,23 @@
+ 		boolean var15 = var10 != 0.0D || var12 != 0.0D;
+ 		if(this.ridingEntity != null) {
+ 			if(var15) {
+-				this.field_797_bg.addToSendQueue(new Packet11PlayerPosition(this.motionX, -999.0D, -999.0D, this.motionZ, this.onGround));
++				this.netClientHandler.addToSendQueue(new Packet11PlayerPosition(this.motionX, -999.0D, -999.0D, this.motionZ, this.onGround));
+ 			} else {
+-				this.field_797_bg.addToSendQueue(new Packet13PlayerLookMove(this.motionX, -999.0D, -999.0D, this.motionZ, this.rotationYaw, this.rotationPitch, this.onGround));
++				this.netClientHandler.addToSendQueue(new Packet13PlayerLookMove(this.motionX, -999.0D, -999.0D, this.motionZ, this.rotationYaw, this.rotationPitch, this.onGround));
+ 			}
+ 
+ 			var14 = false;
+ 		} else if(var14 && var15) {
+-			this.field_797_bg.addToSendQueue(new Packet13PlayerLookMove(this.posX, this.boundingBox.minY, this.posY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround));
++			this.netClientHandler.addToSendQueue(new Packet13PlayerLookMove(this.posX, this.boundingBox.minY, this.posY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround));
+ 			this.field_12242_bI = 0;
+ 		} else if(var14) {
+-			this.field_797_bg.addToSendQueue(new Packet11PlayerPosition(this.posX, this.boundingBox.minY, this.posY, this.posZ, this.onGround));
++			this.netClientHandler.addToSendQueue(new Packet11PlayerPosition(this.posX, this.boundingBox.minY, this.posY, this.posZ, this.onGround));
+ 			this.field_12242_bI = 0;
+ 		} else if(var15) {
+-			this.field_797_bg.addToSendQueue(new Packet12PlayerLook(this.rotationYaw, this.rotationPitch, this.onGround));
++			this.netClientHandler.addToSendQueue(new Packet12PlayerLook(this.rotationYaw, this.rotationPitch, this.onGround));
+ 			this.field_12242_bI = 0;
+ 		} else {
+-			this.field_797_bg.addToSendQueue(new Packet10Flying(this.onGround));
++			this.netClientHandler.addToSendQueue(new Packet10Flying(this.onGround));
+ 			if(this.field_9382_bF == this.onGround && this.field_12242_bI <= 20) {
+ 				++this.field_12242_bI;
+ 			} else {
+@@ -106,9 +106,9 @@
+ 
+ 	private void sendInventoryChanged() {
+ 		if(!this.inventory.compareInventory(this.field_9383_bE)) {
+-			this.field_797_bg.addToSendQueue(new Packet5PlayerInventory(-1, this.inventory.mainInventory));
+-			this.field_797_bg.addToSendQueue(new Packet5PlayerInventory(-2, this.inventory.craftingInventory));
+-			this.field_797_bg.addToSendQueue(new Packet5PlayerInventory(-3, this.inventory.armorInventory));
++			this.netClientHandler.addToSendQueue(new Packet5PlayerInventory(-1, this.inventory.mainInventory));
++			this.netClientHandler.addToSendQueue(new Packet5PlayerInventory(-2, this.inventory.craftingInventory));
++			this.netClientHandler.addToSendQueue(new Packet5PlayerInventory(-3, this.inventory.armorInventory));
+ 			this.field_9383_bE = this.inventory.copyInventory();
+ 		}
+ 
+@@ -116,7 +116,7 @@
+ 
+ 	protected void joinEntityItemWithWorld(EntityItem var1) {
+ 		Packet21PickupSpawn var2 = new Packet21PickupSpawn(var1);
+-		this.field_797_bg.addToSendQueue(var2);
++		this.netClientHandler.addToSendQueue(var2);
+ 		var1.posX = (double)var2.xPosition / 32.0D;
+ 		var1.posY = (double)var2.yPosition / 32.0D;
+ 		var1.posZ = (double)var2.zPosition / 32.0D;
+@@ -126,17 +126,17 @@
+ 	}
+ 
+ 	public void sendChatMessage(String var1) {
+-		this.field_797_bg.addToSendQueue(new Packet3Chat(var1));
++		this.netClientHandler.addToSendQueue(new Packet3Chat(var1));
+ 	}
+ 
+ 	public void func_457_w() {
+ 		super.func_457_w();
+-		this.field_797_bg.addToSendQueue(new Packet18ArmAnimation(this, 1));
++		this.netClientHandler.addToSendQueue(new Packet18ArmAnimation(this, 1));
+ 	}
+ 
+ 	public void func_9367_r() {
+ 		this.sendInventoryChanged();
+-		this.field_797_bg.addToSendQueue(new Packet9());
++		this.netClientHandler.addToSendQueue(new Packet9());
+ 	}
+ 
+ 	protected void damageEntity(int var1) {
+--- net/minecraft/src/NetHandler.java
++++ net/minecraft/src/NetHandler.java
+@@ -137,4 +137,10 @@
+ 	public void func_12245_a(Packet60 var1) {
+ 		this.func_4114_b(var1);
+ 	}
++
++	public void handleEvent(Packet80Event event) {
++	}
++
++	public void handleSound(Packet81Sound sound) {
++	}
+ }
+--- /dev/null
++++ net/minecraft/src/EntityAlex.java
+@@ -1,0 +1,50 @@
++package net.minecraft.src;
++
++public class EntityAlex extends EntityAnimals {
++	private double SY;
++
++	public EntityAlex(World var1) {
++		super(var1);
++		this.texture = "/mob/alex.png";
++		this.health = 831;
++		this.moveSpeed = 1.0F;
++		this.SY = this.posY + 1;
++	}
++
++	public void onLivingUpdate() {
++		super.onLivingUpdate();
++		this.posY = this.SY;
++		EntityPlayer player = (EntityPlayerSP)this.worldObj.getClosestPlayerToEntity(this, 40);
++		if(player != null) {
++			if(this.getDistanceToEntity(player) <= 20) {
++				this.setEntityDead();
++			}
++		}
++	}
++
++	public void readEntityFromNBT(NBTTagCompound var1) {
++		super.readEntityFromNBT(var1);
++		this.SY = var1.getDouble("SY");
++	}
++
++	public void writeEntityToNBT(NBTTagCompound var1) {
++		super.writeEntityToNBT(var1);
++		var1.setDouble("SY", this.SY);
++	}
++
++	public boolean canAttackEntity(Entity var1, int var2) {
++		return false;
++	}
++
++	protected String getLivingSound() {
++		return null;
++	}
++
++	protected String getHurtSound() {
++		return null;
++	}
++
++	protected String getDeathSound() {
++		return null;
++	}
++}
+--- /dev/null
++++ net/minecraft/src/ModelGreatJeb.java
+@@ -1,0 +1,104 @@
++package net.minecraft.src;
++
++public class ModelGreatJeb extends ModelBase {
++	public ModelRenderer bipedHead;
++	public ModelRenderer bipedBody;
++	public ModelRenderer bipedRightArm;
++	public ModelRenderer bipedLeftArm;
++	public ModelRenderer bipedRightLeg;
++	public ModelRenderer bipedLeftLeg;
++
++	public ModelGreatJeb() {
++		this(0.0F);
++	}
++
++	public ModelGreatJeb(float var1) {
++		this(var1, 0.0F);
++	}
++
++	public ModelGreatJeb(float var1, float var2) {
++		float sizeX = 64.0F; float sizeY = 64.0F;
++		this.bipedHead = new ModelRenderer(0, 0, sizeX, sizeY);
++		this.bipedHead.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, var1);
++		this.bipedHead.setPosition(0.0F, -32.0F + var2, 0.0F);
++		this.bipedBody = new ModelRenderer(16, 16, sizeX, sizeY);
++		this.bipedBody.addBox(-4.0F, -6.0F, -2.0F, 8, 12, 4, var1);
++		this.bipedBody.setPosition(0.0F, -26.0F + var2, 0.0F);
++		this.bipedRightArm = new ModelRenderer(40, 16, sizeX, sizeY);
++		this.bipedRightArm.addBox(-3.0F, -2.0F, -2.0F, 4, 20, 4, var1);
++		this.bipedRightArm.setPosition(-6.0F, -30.0F + var2, 0.0F);
++		this.bipedLeftArm = new ModelRenderer(40, 16, sizeX, sizeY);
++		this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 4, 20, 4, var1);
++		this.bipedLeftArm.setPosition(6.0F, -30.0F + var2, 0.0F);
++		this.bipedLeftArm.mirror = true;
++		this.bipedRightLeg = new ModelRenderer(0, 16, sizeX, sizeY);
++		this.bipedRightLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 44, 4, var1);
++		this.bipedRightLeg.setPosition(-2.0F, -20.0F + var2, 0.0F);
++		this.bipedLeftLeg = new ModelRenderer(0, 16, sizeX, sizeY);
++		this.bipedLeftLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 44, 4, var1);
++		this.bipedLeftLeg.setPosition(2.0F, -20.0F + var2, 0.0F);
++		this.bipedLeftLeg.mirror = true;
++	}
++
++	public void render(float var1, float var2, float var3, float var4, float var5, float var6) {
++		this.setRotationAngles(var1, var2, var3, var4, var5, var6);
++		this.bipedHead.render(var6);
++		this.bipedBody.render(var6);
++		this.bipedRightArm.render(var6);
++		this.bipedLeftArm.render(var6);
++		this.bipedRightLeg.render(var6);
++		this.bipedLeftLeg.render(var6);
++	}
++
++	public void setRotationAngles(float var1, float var2, float var3, float var4, float var5, float var6) {
++		this.bipedHead.rotateAngleY = var4 / (180.0F / (float)Math.PI);
++		this.bipedHead.rotateAngleX = var5 / (180.0F / (float)Math.PI);
++		this.bipedRightArm.rotateAngleX = MathHelper.cos(var1 * 0.6662F + (float)Math.PI) * 2.0F * var2 * 0.5F;
++		this.bipedLeftArm.rotateAngleX = MathHelper.cos(var1 * 0.6662F) * 2.0F * var2 * 0.5F;
++		this.bipedRightArm.rotateAngleZ = 0.0F;
++		this.bipedLeftArm.rotateAngleZ = 0.0F;
++		this.bipedRightLeg.rotateAngleX = MathHelper.cos(var1 * 0.6662F) * 1.4F * var2;
++		this.bipedLeftLeg.rotateAngleX = MathHelper.cos(var1 * 0.6662F + (float)Math.PI) * 1.4F * var2;
++		this.bipedRightLeg.rotateAngleY = 0.0F;
++		this.bipedLeftLeg.rotateAngleY = 0.0F;
++		if(this.field_1243_l) {
++			this.bipedRightArm.rotateAngleX += (float)Math.PI * -0.2F;
++			this.bipedLeftArm.rotateAngleX += (float)Math.PI * -0.2F;
++			this.bipedRightLeg.rotateAngleX = (float)Math.PI * -0.4F;
++			this.bipedLeftLeg.rotateAngleX = (float)Math.PI * -0.4F;
++			this.bipedRightLeg.rotateAngleY = (float)Math.PI * 0.1F;
++			this.bipedLeftLeg.rotateAngleY = (float)Math.PI * -0.1F;
++		}
++		this.bipedRightArm.rotateAngleY = 0.0F;
++		this.bipedLeftArm.rotateAngleY = 0.0F;
++		if(this.field_1244_k > -9990.0F) {
++			float var7 = this.field_1244_k;
++			this.bipedBody.rotateAngleY = MathHelper.sin(MathHelper.sqrt_float(var7) * (float)Math.PI * 2.0F) * 0.2F;
++			this.bipedRightArm.offsetZ = MathHelper.sin(this.bipedBody.rotateAngleY) * 5.0F;
++			this.bipedRightArm.offsetX = -MathHelper.cos(this.bipedBody.rotateAngleY) * 5.0F;
++			this.bipedLeftArm.offsetZ = -MathHelper.sin(this.bipedBody.rotateAngleY) * 5.0F;
++			this.bipedLeftArm.offsetX = MathHelper.cos(this.bipedBody.rotateAngleY) * 5.0F;
++			this.bipedRightArm.rotateAngleY += this.bipedBody.rotateAngleY;
++			this.bipedLeftArm.rotateAngleY += this.bipedBody.rotateAngleY;
++			this.bipedLeftArm.rotateAngleX += this.bipedBody.rotateAngleY;
++			var7 = 1.0F - this.field_1244_k;
++			var7 *= var7;
++			var7 *= var7;
++			var7 = 1.0F - var7;
++			float var8 = MathHelper.sin(var7 * (float)Math.PI);
++			float var9 = MathHelper.sin(this.field_1244_k * (float)Math.PI) * -(this.bipedHead.rotateAngleX - 0.7F) * (12.0F / 16.0F);
++			this.bipedRightArm.rotateAngleX = (float)((double)this.bipedRightArm.rotateAngleX - ((double)var8 * 1.2D + (double)var9));
++			this.bipedRightArm.rotateAngleY += this.bipedBody.rotateAngleY * 2.0F;
++			this.bipedRightArm.rotateAngleZ = MathHelper.sin(this.field_1244_k * (float)Math.PI) * -0.4F;
++		}
++
++		this.bipedBody.rotateAngleX = 0.0F;
++		this.bipedRightLeg.offsetZ = 0.0F;
++		this.bipedLeftLeg.offsetZ = 0.0F;
++
++		this.bipedRightArm.rotateAngleZ += MathHelper.cos(var3 * 0.09F) * 0.05F + 0.05F;
++		this.bipedLeftArm.rotateAngleZ -= MathHelper.cos(var3 * 0.09F) * 0.05F + 0.05F;
++		this.bipedRightArm.rotateAngleX += MathHelper.sin(var3 * 0.067F) * 0.05F;
++		this.bipedLeftArm.rotateAngleX -= MathHelper.sin(var3 * 0.067F) * 0.05F;
++	}
++}
+--- net/minecraft/src/EntityZombie.java
++++ net/minecraft/src/EntityZombie.java
+@@ -4,8 +4,8 @@
+ 	public EntityZombie(World var1) {
+ 		super(var1);
+ 		this.texture = "/mob/zombie.png";
+-		this.field_9333_am = 0.5F;
+-		this.field_762_e = 5;
++		this.moveSpeed = 0.5F;
++		this.attackStrange = 5;
+ 	}
+ 
+ 	public void onLivingUpdate() {
+--- net/minecraft/src/Item.java
++++ net/minecraft/src/Item.java
+@@ -102,6 +102,7 @@
+ 	public static Item fishCooked = (new ItemFood(94, 5)).setIconIndex(90);
+ 	public static Item record13 = (new ItemRecord(2000, "13")).setIconIndex(240);
+ 	public static Item recordCat = (new ItemRecord(2001, "cat")).setIconIndex(241);
++	public static Item alex = (new Item(95)).setIconIndex(91);
+ 	public final int shiftedIndex;
+ 	protected int maxStackSize = 64;
+ 	protected int maxDamage = 32;
+--- net/minecraft/src/ModelBiped.java
++++ net/minecraft/src/ModelBiped.java
+@@ -1,11 +1,15 @@
+ package net.minecraft.src;
+ 
++import java.util.Random;
++
+ public class ModelBiped extends ModelBase {
+ 	public ModelRenderer bipedHead;
+ 	public ModelRenderer field_1285_b;
+ 	public ModelRenderer field_1284_c;
+ 	public ModelRenderer bipedRightArm;
+ 	public ModelRenderer bipedLeftArm;
++	public ModelRenderer bipedRightArmSlim;
++	public ModelRenderer bipedLeftArmSlim;
+ 	public ModelRenderer bipedRightLeg;
+ 	public ModelRenderer bipedLeftLeg;
+ 	public boolean field_1279_h;
+@@ -40,6 +44,13 @@
+ 		this.bipedLeftArm.mirror = true;
+ 		this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, var1);
+ 		this.bipedLeftArm.setPosition(5.0F, 2.0F + var2, 0.0F);
++		this.bipedRightArmSlim = new ModelRenderer(40, 16);
++		this.bipedRightArmSlim.addBox(-3.0F, -2.0F, -2.0F, 4, 12, 4, var1);
++		this.bipedRightArmSlim.setPosition(-5.0F, 2.0F + var2, 0.0F);
++		this.bipedLeftArmSlim = new ModelRenderer(40, 16);
++		this.bipedLeftArmSlim.mirror = true;
++		this.bipedLeftArmSlim.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, var1);
++		this.bipedLeftArmSlim.setPosition(5.0F, 2.0F + var2, 0.0F);
+ 		this.bipedRightLeg = new ModelRenderer(0, 16);
+ 		this.bipedRightLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, var1);
+ 		this.bipedRightLeg.setPosition(-2.0F, 12.0F + var2, 0.0F);
+@@ -53,8 +64,13 @@
+ 		this.setRotationAngles(var1, var2, var3, var4, var5, var6);
+ 		this.bipedHead.render(var6);
+ 		this.field_1284_c.render(var6);
+-		this.bipedRightArm.render(var6);
+-		this.bipedLeftArm.render(var6);
++		if(new Random().nextInt(20 * 60) == 0) {
++			this.bipedRightArmSlim.render(var6);
++			this.bipedLeftArmSlim.render(var6);
++		} else {
++			this.bipedRightArm.render(var6);
++			this.bipedLeftArm.render(var6);
++		}
+ 		this.bipedRightLeg.render(var6);
+ 		this.bipedLeftLeg.render(var6);
+ 		this.field_1285_b.render(var6);
+--- /dev/null
++++ net/minecraft/src/WorldRandomEvent.java
+@@ -1,0 +1,148 @@
++package net.minecraft.src;
++
++import org.lwjgl.opengl.Display;
++import java.util.List;
++import java.util.Random;
++
++public class WorldRandomEvent {
++	public World worldObj;
++	public boolean[] timerS;
++	public int[] timer;
++
++	public WorldRandomEvent(World world) {
++		this.worldObj = world;
++		this.timerS = new boolean[10];
++		this.timer = new int[10];
++	}
++
++	public void eventX() {
++		this.worldObj.alexC++;
++	}
++
++	public void event0(EntityPlayerSP playerSP) {
++		playerSP.mc.ingameGUI.addChatMessage("<jeb_> Love Alex.");
++		this.eventX();
++	}
++
++	public void event1(EntityPlayerSP playerSP) {
++		playerSP.mc.ingameGUI.addChatMessage("<jeb_> Think only about Alex.");
++		this.eventX();
++	}
++
++	public void event2(EntityPlayerSP playerSP) {
++		for(int i = 0; i < 8 + new Random().nextInt(8); i++) {
++			playerSP.mc.ingameGUI.addChatMessage("<jeb_> Alex is amazing, he's a god, he should add it now.");
++		}
++		this.eventX();
++	}
++
++	public void event3(EntityPlayerSP playerSP) {
++		this.timerS[0] = true;
++		this.eventX();
++	}
++
++	public void event4(EntityPlayerSP playerSP) {
++		playerSP.mc.timerS[0] = true;
++		this.eventX();
++	}
++
++	public void event5(EntityPlayerSP playerSP) {
++		playerSP.mc.timerS[1] = true;
++		this.eventX();
++	}
++
++	public void event6(EntityPlayerSP playerSP) {
++		playerSP.mc.timerS[0] = true;
++		playerSP.mc.timerS[1] = true;
++		this.eventX();
++	}
++
++	public void event7(EntityPlayerSP playerSP) {
++		playerSP.inventory.dropAllItems();
++		for(int i = 0; i < playerSP.inventory.mainInventory.length; i++) {
++			playerSP.inventory.mainInventory[i] = new ItemStack(Item.alex, 1);
++		}
++		this.eventX();
++	}
++
++	public void event8(EntityPlayerSP playerSP) {
++		playerSP.mc.displayGuiScreen(new GuiAlex("Think only about Alex."));
++	}
++
++	public void event9(EntityPlayerSP playerSP) {
++		playerSP.mc.displayGuiScreen(new GuiJeb_("Are you \"\"\"\"Alex\"\"\"\"?"));
++	}
++
++	public void event10(EntityPlayerSP playerSP) {
++		EntityJeb_ jeb_ = new EntityJeb_(this.worldObj);
++		jeb_.setPosition(playerSP.posX + 30, this.worldObj.getHeightValue((int)playerSP.posX + 30, (int)playerSP.posZ), playerSP.posZ);
++		this.worldObj.entityJoinedWorld(jeb_);
++		this.eventX();
++	}
++
++	public void tickEvents() {
++		if(!this.worldObj.multiplayerWorld) {
++			List<EntityPlayerSP> playerSPList = this.worldObj.playerEntities;
++			if(!playerSPList.isEmpty()) {
++				EntityPlayerSP playerSP = playerSPList.get(new Random().nextInt(playerSPList.size()));
++				switch(new Random().nextInt(20 * 60 * 30)) {
++				case 0:
++					this.event0(playerSP);
++					break;
++				case 1:
++					this.event1(playerSP);
++					break;
++				case 2:
++					this.event2(playerSP);
++					break;
++				case 3:
++					this.event3(playerSP);
++					break;
++				case 4:
++					this.event4(playerSP);
++					break;
++				case 5:
++					this.event5(playerSP);
++					break;
++				case 6:
++					this.event6(playerSP);
++					break;
++				case 7:
++					this.event7(playerSP);
++					break;
++				case 8:
++					this.event8(playerSP);
++					break;
++				case 9:
++					this.event9(playerSP);
++					break;
++				case 10:
++					this.event10(playerSP);
++					break;
++				}
++				if(this.timerS[0]) {
++					this.timer[0]++;
++					this.worldObj.setWorldTime(23000);
++					if(this.timer[0] >= 20 * 60 * 12) {
++						this.timerS[0] = false;
++						this.timer[0] = 0;
++					}
++				}
++				if(this.worldObj.alexC >= 18 && !this.worldObj.alexCU) {
++					this.worldObj.SX = (int)playerSP.posX;
++					this.worldObj.SY = (int)playerSP.posY;
++					this.worldObj.SZ = (int)playerSP.posZ;
++					new WorldGenAlexAndJeb_WeddingHall().generate(this.worldObj, this.worldObj.rand, this.worldObj.SX - 3, this.worldObj.SY - 3, this.worldObj.SZ - 3);
++					playerSPList.forEach((e)->{
++						e.setPosition(this.worldObj.SX, this.worldObj.SY, this.worldObj.SZ);
++					});
++					this.worldObj.alexCU = true;
++					playerSP.mc.ingameGUI.addChatMessage("Why don’t you love Alex?");
++				}
++				if(this.worldObj.last) {
++					playerSP.mc.displayGuiScreen(new GuiNoAlex("Unidentified Entity", "Could not add \"Alex.\""));
++				}
++			}
++		}
++	}
++}
+--- /dev/null
++++ net/minecraft/src/EntityAX.java
+@@ -1,0 +1,33 @@
++package net.minecraft.src;
++
++public class EntityAX extends EntityAttack {
++	public EntityAX(World var1) {
++		super(var1);
++		this.texture = "/mob/ax.png";
++		this.health = 138;
++		this.moveSpeed = 1.0F;
++		this.attackStrange = 1;
++	}
++
++	public void onUpdate() {
++		for(int i = 0; i < 4; i++) {
++			super.onUpdate();
++		}
++	}
++
++	public boolean canAttackEntity(Entity var1, int var2) {
++		return false;
++	}
++
++	protected String getLivingSound() {
++		return null;
++	}
++
++	protected String getHurtSound() {
++		return null;
++	}
++
++	protected String getDeathSound() {
++		return null;
++	}
++}
+--- net/minecraft/src/GuiChat.java
++++ net/minecraft/src/GuiChat.java
+@@ -1,11 +1,18 @@
+ package net.minecraft.src;
+ 
+ import org.lwjgl.input.Keyboard;
++import java.awt.*;
++import java.awt.datatransfer.DataFlavor;
++import java.awt.datatransfer.StringSelection;
+ 
+ public class GuiChat extends GuiScreen {
+ 	private String message = "";
+ 	private int updateCounter = 0;
+ 
++	public boolean doesGuiPauseGame() {
++		return false;
++	}
++
+ 	public void initGui() {
+ 		Keyboard.enableRepeatEvents(true);
+ 	}
+@@ -28,6 +35,18 @@
+ 			}
+ 
+ 			this.mc.displayGuiScreen((GuiScreen)null);
++		} else if(var2 == 47 && Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
++			try {
++				String paste = (String)Toolkit.getDefaultToolkit()
++						.getSystemClipboard().getData(DataFlavor.stringFlavor);
++				this.message = this.message + paste;
++			} catch (Exception e) {}
++		} else if(var2 == 46 && Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
++			try {
++				StringSelection ss = new StringSelection(this.message);
++				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
++			} catch (Exception e) {}
++			return;
+ 		} else {
+ 			if(var2 == 14 && this.message.length() > 0) {
+ 				this.message = this.message.substring(0, this.message.length() - 1);
+@@ -38,6 +57,8 @@
+ 			}
+ 
+ 		}
++
++
+ 	}
+ 
+ 	public void drawScreen(int var1, int var2, float var3) {
+--- /dev/null
++++ net/minecraft/src/GlitchNoise.java
+@@ -1,0 +1,80 @@
++package net.minecraft.src;
++
++import javax.sound.sampled.*;
++import java.util.Random;
++
++public class GlitchNoise {
++	public static void playGlitch() {
++		float sampleRate = 44100;
++		int sampleSizeInBits = 16;
++		int channels = 1;
++		boolean signed = true;
++		boolean bigEndian = false;
++
++		AudioFormat format = new AudioFormat(sampleRate, sampleSizeInBits,
++				channels, signed, bigEndian);
++		DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
++		SourceDataLine line;
++		try {
++			line = (SourceDataLine)AudioSystem.getLine(info);
++			line.open(format);
++		} catch (LineUnavailableException e) {
++			throw new RuntimeException(e);
++		}
++
++		line.start();
++
++		Random random = new Random();
++		int frameSize = format.getFrameSize();
++		byte[] buffer = new byte[2048 * frameSize];
++		float glitchType = random.nextFloat();
++
++		if(glitchType < 0.3) {
++			for(int j = 0; j < buffer.length; j++) {
++				buffer[j] = (byte)((random.nextInt(256) - 128) * 0.3);
++			}
++		} else if(glitchType < 0.5) {
++			byte value = (byte)(random.nextInt(100) - 50);
++			for(int j = 0; j < buffer.length; j++) {
++				if(random.nextFloat() < 0.1) {
++					value = (byte)(random.nextInt(100) - 50);
++				}
++				buffer[j] = (byte)(value & (0xFF << random.nextInt(5)));
++			}
++		} else if(glitchType < 0.7) {
++			for(int j = 0; j < buffer.length; j++) {
++				if(random.nextFloat() < 0.05) {
++					buffer[j] = (byte)((random.nextInt(256) - 128) * 0.4);
++				} else {
++					buffer[j] = 0;
++				}
++			}
++		} else if(glitchType < 0.85) {
++			byte holdValue = 0;
++			int holdLength = random.nextInt(20) + 5;
++			for(int j = 0; j < buffer.length; j++) {
++				if(j % holdLength == 0) {
++					holdValue = (byte)((random.nextInt(200) - 100) * 0.25);
++				}
++				buffer[j] = holdValue;
++			}
++		} else {
++			int chunkSize = (random.nextInt(50) + 5) * frameSize;
++			byte[] chunk = new byte[chunkSize];
++			for(int j = 0; j < chunkSize; j++) {
++				chunk[j] = (byte)((random.nextInt(256) - 128) * 0.2);
++			}
++			for(int j = 0; j < buffer.length; j++) {
++				buffer[j] = chunk[j % chunkSize];
++			}
++		}
++
++		line.write(buffer, 0, buffer.length);
++
++		if(random.nextFloat() < 0.2) {
++			int silenceSize = random.nextInt(250) * frameSize;
++			byte[] silence = new byte[silenceSize];
++			line.write(silence, 0, silence.length);
++		}
++	}
++}
+--- net/minecraft/src/EntityLiving.java
++++ net/minecraft/src/EntityLiving.java
+@@ -54,7 +54,7 @@
+ 	protected float field_9338_aj;
+ 	protected boolean isJumping = false;
+ 	protected float field_9334_al = 0.0F;
+-	protected float field_9333_am = 0.7F;
++	protected float moveSpeed = 0.7F;
+ 	private Entity b;
+ 	private int c = 0;
+ 
+--- net/minecraft/src/TexturedQuad.java
++++ net/minecraft/src/TexturedQuad.java
+@@ -12,14 +12,14 @@
+ 		this.field_1194_b = var1.length;
+ 	}
+ 
+-	public TexturedQuad(PositionTexureVertex[] var1, int var2, int var3, int var4, int var5) {
++	public TexturedQuad(PositionTexureVertex[] var1, int var2, int var3, int var4, int var5, float XX, float YY) {
+ 		this(var1);
+ 		float var6 = 0.0015625F;
+ 		float var7 = 0.003125F;
+-		var1[0] = var1[0].setTexturePosition((float)var4 / 64.0F - var6, (float)var3 / 32.0F + var7);
+-		var1[1] = var1[1].setTexturePosition((float)var2 / 64.0F + var6, (float)var3 / 32.0F + var7);
+-		var1[2] = var1[2].setTexturePosition((float)var2 / 64.0F + var6, (float)var5 / 32.0F - var7);
+-		var1[3] = var1[3].setTexturePosition((float)var4 / 64.0F - var6, (float)var5 / 32.0F - var7);
++		var1[0] = var1[0].setTexturePosition((float)var4 / XX - var6, (float)var3 / YY + var7);
++		var1[1] = var1[1].setTexturePosition((float)var2 / XX + var6, (float)var3 / YY + var7);
++		var1[2] = var1[2].setTexturePosition((float)var2 / XX + var6, (float)var5 / YY - var7);
++		var1[3] = var1[3].setTexturePosition((float)var4 / XX - var6, (float)var5 / YY - var7);
+ 	}
+ 
+ 	public void func_809_a() {
