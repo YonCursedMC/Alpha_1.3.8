@@ -112,7 +112,7 @@
 +					super.onUpdate();
 +				}
 +			}
-+			if(this.getDistanceToEntity(player) <= 5) {
++			if(this.getDistanceToEntity(player) <= 3) {
 +				this.setEntityDead();
 +			}
 +		}
@@ -648,13 +648,13 @@
 +
 +public class WorldGenAlexAndJeb_WeddingHall extends WorldGenerator {
 +	public boolean generate(World var1, Random var2, int var3, int var4, int var5) {
-+		int length = 32;
++		int length = 48;
 +		int width = 7;
 +		int height = 10;
 +		for(int i = 0; i < length; i++) {
 +			for(int j = 0; j < width; j++) {
 +				for(int k = 0; k < height; k++) {
-+					if(k >= 1 && j >= 1 && j <= 5 && i != 0 && i != 31) {
++					if(k >= 1 && j >= 1 && j <= 5 && i != 0 && i != 47) {
 +						var1.setBlockWithNotify(i + var3, k + var4, j + var5, 0);
 +					} else {
 +						var1.setBlockWithNotify(i + var3, k + var4, j + var5, Block.bedrock.blockID);
@@ -731,7 +731,7 @@
 +}
 --- net/minecraft/src/EntityList.java
 +++ net/minecraft/src/EntityList.java
-@@ -98,6 +98,10 @@
+@@ -98,6 +98,12 @@
  		addMapping(EntitySheep.class, "Sheep", 91);
  		addMapping(EntityCow.class, "Cow", 92);
  		addMapping(EntityChicken.class, "Chicken", 93);
@@ -739,6 +739,8 @@
 +		addMapping(EntityJeb_.class, "Jeb_", 101);
 +		addMapping(EntityAX.class, "AX", 102);
 +		addMapping(EntityJB.class, "JB", 103);
++		addMapping(EntityZ3JlYXRBbGV4.class, "Z3JlYXRBbGV4", 104);
++		addMapping(EntityY3JpdGljaXplSmViIA.class, "Y3JpdGljaXplSmViIA", 105);
  		addMapping(EntityTNTPrimed.class, "PrimedTnt", 20);
  		addMapping(EntityFallingSand.class, "FallingSand", 21);
  		addMapping(EntityMinecart.class, "Minecart", 40);
@@ -755,7 +757,7 @@
  			var5 = var5 + "VM: " + System.getProperty("java.vm.name") + " (" + System.getProperty("java.vm.info") + "), " + System.getProperty("java.vm.vendor") + "\n";
 --- /dev/null
 +++ net/minecraft/src/EntityY3JpdGljaXplSmViIA.java
-@@ -1,0 +1,36 @@
+@@ -1,0 +1,37 @@
 +package net.minecraft.src;
 +
 +public class EntityY3JpdGljaXplSmViIA extends EntityAttack {
@@ -768,8 +770,9 @@
 +	}
 +
 +	public void onUpdate() {
++		super.onUpdate();
 +		EntityPlayerSP playerSP = (EntityPlayerSP)this.worldObj.getClosestPlayerToEntity(this, 60);
-+		if(this.getDistanceToEntity(playerSP) <= 20) {
++		if(this.getDistanceToEntity(playerSP) <= 8) {
 +			for(int i = 0; i < 3; i++) {
 +				super.onUpdate();
 +			}
@@ -794,7 +797,7 @@
 +}
 --- /dev/null
 +++ net/minecraft/src/EntityAttack.java
-@@ -1,0 +1,38 @@
+@@ -1,0 +1,160 @@
 +package net.minecraft.src;
 +
 +public abstract class EntityAttack extends EntityAnimals {
@@ -832,10 +835,132 @@
 +
 +	}
 +
++	protected void func_418_b_() {
++		this.hasAttacked = false;
++		float var1 = 48.0F;
++		if(this.playerToAttack == null) {
++			this.playerToAttack = this.findPlayerToAttack();
++			if(this.playerToAttack != null) {
++				this.pathToEntity = this.worldObj.getPathToEntity(this, this.playerToAttack, var1);
++			}
++		} else if(!this.playerToAttack.isEntityAlive()) {
++			this.playerToAttack = null;
++		} else {
++			float var2 = this.playerToAttack.getDistanceToEntity(this);
++			if(this.canEntityBeSeen(this.playerToAttack)) {
++				this.attackEntity(this.playerToAttack, var2);
++			}
++		}
++
++		if(this.hasAttacked || this.playerToAttack == null || this.pathToEntity != null && this.rand.nextInt(20) != 0) {
++			if(this.pathToEntity == null && this.rand.nextInt(80) == 0 || this.rand.nextInt(80) == 0) {
++				boolean var21 = false;
++				int var3 = -1;
++				int var4 = -1;
++				int var5 = -1;
++				float var6 = -99999.0F;
++
++				for(int var7 = 0; var7 < 10; ++var7) {
++					int var8 = MathHelper.floor_double(this.posX + (double)this.rand.nextInt(13) - 6.0D);
++					int var9 = MathHelper.floor_double(this.posY + (double)this.rand.nextInt(7) - 3.0D);
++					int var10 = MathHelper.floor_double(this.posZ + (double)this.rand.nextInt(13) - 6.0D);
++					float var11 = this.func_439_a(var8, var9, var10);
++					if(var11 > var6) {
++						var6 = var11;
++						var3 = var8;
++						var4 = var9;
++						var5 = var10;
++						var21 = true;
++					}
++				}
++
++				if(var21) {
++					this.pathToEntity = this.worldObj.getEntityPathToXYZ(this, var3, var4, var5, 10.0F);
++				}
++			}
++		} else {
++			this.pathToEntity = this.worldObj.getPathToEntity(this, this.playerToAttack, var1);
++		}
++
++		int var22 = MathHelper.floor_double(this.boundingBox.minY);
++		boolean var23 = this.handleWaterMovement();
++		boolean var24 = this.handleLavaMovement();
++		this.rotationPitch = 0.0F;
++		if(this.pathToEntity != null && this.rand.nextInt(100) != 0) {
++			Vec3D var25 = this.pathToEntity.getPosition(this);
++			double var26 = (double)(this.width * 2.0F);
++
++			while(var25 != null && var25.squareDistanceTo(this.posX, var25.yCoord, this.posZ) < var26 * var26) {
++				this.pathToEntity.incrementPathIndex();
++				if(this.pathToEntity.isFinished()) {
++					var25 = null;
++					this.pathToEntity = null;
++				} else {
++					var25 = this.pathToEntity.getPosition(this);
++				}
++			}
++
++			this.isJumping = false;
++			if(var25 != null) {
++				double var27 = var25.xCoord - this.posX;
++				double var28 = var25.zCoord - this.posZ;
++				double var12 = var25.yCoord - (double)var22;
++				float var14 = (float)(Math.atan2(var28, var27) * 180.0D / (double)((float)Math.PI)) - 90.0F;
++				float var15 = var14 - this.rotationYaw;
++
++				for(this.field_9340_ai = this.moveSpeed; var15 < -180.0F; var15 += 360.0F) {
++				}
++
++				while(var15 >= 180.0F) {
++					var15 -= 360.0F;
++				}
++
++				if(var15 > 30.0F) {
++					var15 = 30.0F;
++				}
++
++				if(var15 < -30.0F) {
++					var15 = -30.0F;
++				}
++
++				this.rotationYaw += var15;
++				if(this.hasAttacked && this.playerToAttack != null) {
++					double var16 = this.playerToAttack.posX - this.posX;
++					double var18 = this.playerToAttack.posZ - this.posZ;
++					float var20 = this.rotationYaw;
++					this.rotationYaw = (float)(Math.atan2(var18, var16) * 180.0D / (double)((float)Math.PI)) - 90.0F;
++					var15 = (var20 - this.rotationYaw + 90.0F) * (float)Math.PI / 180.0F;
++					this.field_9342_ah = -MathHelper.sin(var15) * this.field_9340_ai * 1.0F;
++					this.field_9340_ai = MathHelper.cos(var15) * this.field_9340_ai * 1.0F;
++				}
++
++				if(var12 > 0.0D) {
++					this.isJumping = true;
++				}
++			}
++
++			if(this.playerToAttack != null) {
++				this.faceEntity(this.playerToAttack, 30.0F);
++			}
++
++			if(this.field_9297_aI) {
++				this.isJumping = true;
++			}
++
++			if(this.rand.nextFloat() < 0.8F && (var23 || var24)) {
++				this.isJumping = true;
++			}
++
++		} else {
++			super.func_418_b_();
++			this.pathToEntity = null;
++		}
++	}
++
 +}
 --- net/minecraft/client/Minecraft.java
 +++ net/minecraft/client/Minecraft.java
-@@ -8,69 +8,8 @@
+@@ -8,69 +8,9 @@
  import java.awt.Frame;
  import java.awt.Graphics;
  import java.io.File;
@@ -903,11 +1028,12 @@
 -import net.minecraft.src.WorldProviderHell;
 -import net.minecraft.src.WorldRenderer;
 +import java.io.IOException;
++import java.util.Random;
 +import net.minecraft.src.*;
  import org.lwjgl.LWJGLException;
  import org.lwjgl.input.Controllers;
  import org.lwjgl.input.Keyboard;
-@@ -135,6 +74,9 @@
+@@ -135,6 +75,9 @@
  	public boolean field_6288_M = false;
  	long field_6287_N = System.currentTimeMillis();
  	private int field_6300_ab = 0;
@@ -917,7 +1043,7 @@
  
  	public Minecraft(Component var1, Canvas var2, MinecraftApplet var3, int var4, int var5, boolean var6) {
  		this.field_9236_T = var4;
-@@ -146,6 +88,9 @@
+@@ -146,6 +89,9 @@
  		this.displayWidth = var4;
  		this.displayHeight = var5;
  		this.a = var6;
@@ -927,7 +1053,7 @@
  	}
  
  	public abstract void func_4007_a(UnexpectedThrowable var1);
-@@ -180,7 +125,7 @@
+@@ -180,7 +126,7 @@
  			Display.setDisplayMode(new DisplayMode(this.displayWidth, this.displayHeight));
  		}
  
@@ -936,13 +1062,12 @@
  
  		try {
  			Display.create();
-@@ -841,6 +786,77 @@
+@@ -841,6 +787,75 @@
  	}
  
  	public void runTick() {
 +		if(this.timerS[0]) {
 +			this.timers[0]++;
-+			new Thread(()->WavPlaySound.playsound("/sounds/n0.wav")).start();
 +			if(this.timers[0] >= 20 * 5) {
 +				this.timerS[0] = false;
 +				this.timers[0] = 0;
@@ -950,7 +1075,6 @@
 +		}
 +		if(this.timerS[1]) {
 +			this.timers[1]++;
-+			new Thread(()->WavPlaySound.playsound("/sounds/n1.wav")).start();
 +			if(this.timers[1] >= 20 * 5) {
 +				this.timerS[1] = false;
 +				this.timers[1] = 0;
@@ -1014,13 +1138,19 @@
  		this.ingameGUI.func_555_a();
  		this.field_9243_r.func_910_a(1.0F);
  		if(this.thePlayer != null) {
-@@ -923,6 +939,11 @@
+@@ -923,6 +938,17 @@
  												if(Keyboard.getEventKey() == Keyboard.KEY_F5) {
  													this.gameSettings.thirdPersonView = !this.gameSettings.thirdPersonView;
  												}
 +
 +												if(Keyboard.getEventKey() == Keyboard.KEY_F6) {
-+													this.theWorld.randomEvent.event8(this.thePlayer);
++													/**
++													 if(this.isMultiplayerWorld()) {
++													 ((EntityClientPlayerMP)this.thePlayer).netClientHandler.addToSendQueue(new Packet80Event(40));
++													 }else {
++													 this.theWorld.randomEvent.eventX();
++													 }
++													 */
 +												}
 +
  
@@ -1041,12 +1171,12 @@
  	}
  
  	public void onLivingUpdate() {
-+		if(this.worldObj.alexCU && this.posX >= this.worldObj.SX + 20 && !this.worldObj.entityX) {
++		if(this.worldObj.alexCU && this.posX >= this.worldObj.SX + 42 && !this.worldObj.entityX) {
 +			EntityY3JpdGljaXplSmViIA y3JpdGljaXplSmViIA = new EntityY3JpdGljaXplSmViIA(this.worldObj);
 +			EntityZ3JlYXRBbGV4 z3JlYXRBbGV4 = new EntityZ3JlYXRBbGV4(this.worldObj);
 +			y3JpdGljaXplSmViIA.setPosition(this.worldObj.SX + 6, this.worldObj.SY, this.worldObj.SZ);
 +			z3JlYXRBbGV4.setPosition(this.worldObj.SX + 6, this.worldObj.SY, this.worldObj.SZ);
-+			this.mc.ingameGUI.addChatMessage("You created her.");
++			this.mc.ingameGUI.addChatMessage("<jeb_> You created her.");
 +			this.worldObj.entityJoinedWorld(y3JpdGljaXplSmViIA);
 +			this.worldObj.entityJoinedWorld(z3JlYXRBbGV4);
 +			this.worldObj.entityX = true;
@@ -1097,10 +1227,10 @@
 +		if(new Random().nextInt(3) == 0) {
 +			if(!this.mc.isMultiplayerWorld()) {
 +				EntityAX ax = new EntityAX(this.mc.theWorld);
-+				ax.setPosition(this.mc.thePlayer.posX + 16, this.mc.theWorld.getHeightValue((int)this.mc.thePlayer.posX + 16, (int)this.mc.thePlayer.posZ), this.mc.thePlayer.posZ);
++				ax.setPosition(this.mc.thePlayer.posX + 14, this.mc.theWorld.getHeightValue((int)this.mc.thePlayer.posX + 14, (int)this.mc.thePlayer.posZ), this.mc.thePlayer.posZ);
 +				this.mc.theWorld.entityJoinedWorld(ax);
 +			} else {
-+				((EntityClientPlayerMP)this.mc.thePlayer).netClientHandler.addToSendQueue(new Packet80Event(1));
++				((EntityClientPlayerMP)this.mc.thePlayer).netClientHandler.addToSendQueue(new Packet80Event(0));
 +			}
 +		}
 +	}
@@ -1219,7 +1349,7 @@
 +		if(new Random().nextInt(3) == 0) {
 +			if(!this.mc.isMultiplayerWorld()) {
 +				EntityJB jb = new EntityJB(this.mc.theWorld);
-+				jb.setPosition(this.mc.thePlayer.posX + 16, this.mc.theWorld.getHeightValue((int)this.mc.thePlayer.posX + 16, (int)this.mc.thePlayer.posZ), this.mc.thePlayer.posZ);
++				jb.setPosition(this.mc.thePlayer.posX + 14, this.mc.theWorld.getHeightValue((int)this.mc.thePlayer.posX + 14, (int)this.mc.thePlayer.posZ), this.mc.thePlayer.posZ);
 +				this.mc.theWorld.entityJoinedWorld(jb);
 +			} else {
 +				((EntityClientPlayerMP)this.mc.thePlayer).netClientHandler.addToSendQueue(new Packet80Event(1));
@@ -1238,7 +1368,7 @@
 +}
 --- /dev/null
 +++ net/minecraft/src/EntityZ3JlYXRBbGV4.java
-@@ -1,0 +1,36 @@
+@@ -1,0 +1,37 @@
 +package net.minecraft.src;
 +
 +public class EntityZ3JlYXRBbGV4 extends EntityAttack {
@@ -1251,8 +1381,9 @@
 +	}
 +
 +	public void onUpdate() {
++		super.onUpdate();
 +		EntityPlayerSP playerSP = (EntityPlayerSP)this.worldObj.getClosestPlayerToEntity(this, 60);
-+		if(this.getDistanceToEntity(playerSP) <= 20) {
++		if(this.getDistanceToEntity(playerSP) <= 8) {
 +			for(int i = 0; i < 3; i++) {
 +				super.onUpdate();
 +			}
@@ -1347,6 +1478,48 @@
 +		}
 +	}
 +}
+--- net/minecraft/src/NetClientHandler.java
++++ net/minecraft/src/NetClientHandler.java
+@@ -442,4 +442,39 @@
+ 		var2.field_12251_g = var1.field_12237_e;
+ 		var2.func_12247_b();
+ 	}
++
++	public void handleEvent(Packet80Event event) {
++		switch(event.event) {
++		case 0:
++			this.mc.timerS[0] = true;
++			new Thread(()->WavPlaySound.playsound("/sounds/n0.wav")).start();
++			break;
++		case 1:
++			this.mc.timerS[1] = true;
++			new Thread(()->WavPlaySound.playsound("/sounds/n1.wav")).start();
++			break;
++		case 2:
++			this.mc.timerS[2] = true;
++			break;
++		case 3:
++			this.mc.timerS[3] = true;
++			break;
++		case 4:
++			this.mc.timerS[4] = true;
++			break;
++		case 20:
++			this.mc.displayGuiScreen(new GuiAlex("Think only about Alex."));
++			break;
++		case 21:
++			this.mc.displayGuiScreen(new GuiJeb_("Are you \"\"\"\"Alex\"\"\"\"?"));
++			break;
++		case 30:
++			this.mc.displayGuiScreen(new GuiNoAlex("Unidentified Entity", "Could not add \"Alex.\""));
++			break;
++		}
++	}
++
++	public void handleSound(Packet81Sound sound) {
++		new Thread(()->WavPlaySound.playsound(sound.path)).start();
++	}
+ }
 --- net/minecraft/src/EntityClientPlayerMP.java
 +++ net/minecraft/src/EntityClientPlayerMP.java
 @@ -3,7 +3,7 @@
@@ -1454,20 +1627,22 @@
  	protected void damageEntity(int var1) {
 --- net/minecraft/src/NetHandler.java
 +++ net/minecraft/src/NetHandler.java
-@@ -137,4 +137,10 @@
+@@ -137,4 +137,12 @@
  	public void func_12245_a(Packet60 var1) {
  		this.func_4114_b(var1);
  	}
 +
 +	public void handleEvent(Packet80Event event) {
++		this.func_4114_b(event);
 +	}
 +
 +	public void handleSound(Packet81Sound sound) {
++		this.func_4114_b(sound);
 +	}
  }
 --- /dev/null
 +++ net/minecraft/src/EntityAlex.java
-@@ -1,0 +1,50 @@
+@@ -1,0 +1,51 @@
 +package net.minecraft.src;
 +
 +public class EntityAlex extends EntityAnimals {
@@ -1484,6 +1659,7 @@
 +	public void onLivingUpdate() {
 +		super.onLivingUpdate();
 +		this.posY = this.SY;
++		this.prevPosY = this.SY;
 +		EntityPlayer player = (EntityPlayerSP)this.worldObj.getClosestPlayerToEntity(this, 40);
 +		if(player != null) {
 +			if(this.getDistanceToEntity(player) <= 20) {
@@ -1698,7 +1874,7 @@
  		this.field_1285_b.render(var6);
 --- /dev/null
 +++ net/minecraft/src/WorldRandomEvent.java
-@@ -1,0 +1,148 @@
+@@ -1,0 +1,152 @@
 +package net.minecraft.src;
 +
 +import org.lwjgl.opengl.Display;
@@ -1743,11 +1919,13 @@
 +	}
 +
 +	public void event4(EntityPlayerSP playerSP) {
++		new Thread(()->WavPlaySound.playsound("/sounds/n0.wav")).start();
 +		playerSP.mc.timerS[0] = true;
 +		this.eventX();
 +	}
 +
 +	public void event5(EntityPlayerSP playerSP) {
++		new Thread(()->WavPlaySound.playsound("/sounds/n1.wav")).start();
 +		playerSP.mc.timerS[1] = true;
 +		this.eventX();
 +	}
@@ -1755,6 +1933,8 @@
 +	public void event6(EntityPlayerSP playerSP) {
 +		playerSP.mc.timerS[0] = true;
 +		playerSP.mc.timerS[1] = true;
++		new Thread(()->WavPlaySound.playsound("/sounds/n0.wav")).start();
++		new Thread(()->WavPlaySound.playsound("/sounds/n1.wav")).start();
 +		this.eventX();
 +	}
 +
@@ -1776,7 +1956,7 @@
 +
 +	public void event10(EntityPlayerSP playerSP) {
 +		EntityJeb_ jeb_ = new EntityJeb_(this.worldObj);
-+		jeb_.setPosition(playerSP.posX + 30, this.worldObj.getHeightValue((int)playerSP.posX + 30, (int)playerSP.posZ), playerSP.posZ);
++		jeb_.setPosition(playerSP.posX + 60, this.worldObj.getHeightValue((int)playerSP.posX + 60, (int)playerSP.posZ), playerSP.posZ);
 +		this.worldObj.entityJoinedWorld(jeb_);
 +		this.eventX();
 +	}
@@ -1838,7 +2018,7 @@
 +						e.setPosition(this.worldObj.SX, this.worldObj.SY, this.worldObj.SZ);
 +					});
 +					this.worldObj.alexCU = true;
-+					playerSP.mc.ingameGUI.addChatMessage("Why don’t you love Alex?");
++					playerSP.mc.ingameGUI.addChatMessage("<jeb_> Why don’t you love Alex?");
 +				}
 +				if(this.worldObj.last) {
 +					playerSP.mc.displayGuiScreen(new GuiNoAlex("Unidentified Entity", "Could not add \"Alex.\""));
