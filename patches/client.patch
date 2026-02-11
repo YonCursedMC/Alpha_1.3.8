@@ -611,7 +611,7 @@
  		}
 --- /dev/null
 +++ net/minecraft/src/ModelBipedSlim.java
-@@ -1,0 +1,119 @@
+@@ -1,0 +1,112 @@
 +package net.minecraft.src;
 +
 +import java.util.Random;
@@ -622,8 +622,6 @@
 +	public ModelRenderer field_1284_c;
 +	public ModelRenderer bipedRightArm;
 +	public ModelRenderer bipedLeftArm;
-+	public ModelRenderer bipedRightArmSlim;
-+	public ModelRenderer bipedLeftArmSlim;
 +	public ModelRenderer bipedRightLeg;
 +	public ModelRenderer bipedLeftLeg;
 +
@@ -665,13 +663,8 @@
 +		this.setRotationAngles(var1, var2, var3, var4, var5, var6);
 +		this.bipedHead.render(var6);
 +		this.field_1284_c.render(var6);
-+		if(new Random().nextInt(20 * 60) == 0) {
-+			this.bipedRightArmSlim.render(var6);
-+			this.bipedLeftArmSlim.render(var6);
-+		} else {
-+			this.bipedRightArm.render(var6);
-+			this.bipedLeftArm.render(var6);
-+		}
++		this.bipedRightArm.render(var6);
++		this.bipedLeftArm.render(var6);
 +		this.bipedRightLeg.render(var6);
 +		this.bipedLeftLeg.render(var6);
 +		this.field_1285_b.render(var6);
@@ -1281,7 +1274,7 @@
 +												if(Keyboard.getEventKey() == Keyboard.KEY_F6) {
 +													/**
 +													 if(this.isMultiplayerWorld()) {
-+													 ((EntityClientPlayerMP)this.thePlayer).netClientHandler.addToSendQueue(new Packet80Event(40));
++													 ((EntityClientPlayerMP)this.thePlayer).netClientHandler.addToSendQueue(new Packet80Event(30));
 +													 } else {
 +													 this.theWorld.randomEvent.eventX();
 +													 }
@@ -2137,7 +2130,7 @@
 +
 +	public void event10(EntityPlayerSP playerSP) {
 +		EntityJeb_ jeb_ = new EntityJeb_(this.worldObj);
-+		jeb_.setPosition(playerSP.posX + 60, this.worldObj.getHeightValue((int)playerSP.posX + 60, (int)playerSP.posZ), playerSP.posZ);
++		jeb_.setPosition(playerSP.posX + 48, this.worldObj.getHeightValue((int)playerSP.posX + 48, (int)playerSP.posZ), playerSP.posZ);
 +		this.worldObj.entityJoinedWorld(jeb_);
 +		this.eventX();
 +	}

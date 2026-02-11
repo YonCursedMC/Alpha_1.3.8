@@ -980,7 +980,7 @@
 +
 +	public void event10(EntityPlayerMP playerSP) {
 +		EntityJeb_ jeb_ = new EntityJeb_(this.worldObj);
-+		jeb_.setPosition(playerSP.posX + 60, this.worldObj.getHeightValue((int)playerSP.posX + 60, (int)playerSP.posZ), playerSP.posZ);
++		jeb_.setPosition(playerSP.posX + 48, this.worldObj.getHeightValue((int)playerSP.posX + 48, (int)playerSP.posZ), playerSP.posZ);
 +		this.worldObj.entityJoinedWorld(jeb_);
 +		this.eventX();
 +	}
