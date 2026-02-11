@@ -267,7 +267,7 @@
  		this.entityRenderMap.put(EntityMinecart.class, new RenderMinecart());
  		this.entityRenderMap.put(EntityBoat.class, new RenderBoat());
  		this.entityRenderMap.put(EntityFish.class, new RenderFish());
-+		this.entityRenderMap.put(EntityAlex.class, new RenderBiped(new ModelBiped(), 0.5F));
++		this.entityRenderMap.put(EntityAlex.class, new RenderBipedSlim(new ModelBipedSlim(), 0.5F));
 +		this.entityRenderMap.put(EntityJeb_.class, new RenderBiped(new ModelBiped(), 0.5F));
 +		this.entityRenderMap.put(EntityAX.class, new RenderAlex(new ModelAlex(), 0.5F));
 +		this.entityRenderMap.put(EntityJB.class, new RenderJeb(new ModelGreatJeb(), 0.5F));
@@ -550,6 +550,19 @@
  		Tessellator var3 = Tessellator.instance;
  		var3.startDrawingQuads();
  		var3.addVertexWithUV(0.0D, (double)var2, -90.0D, 0.0D, 1.0D);
+--- /dev/null
++++ net/minecraft/src/RenderBipedSlim.java
+@@ -1,0 +1,10 @@
++package net.minecraft.src;
++
++public class RenderBipedSlim extends RenderLiving {
++	protected ModelBipedSlim bipedSlim;
++
++	public RenderBipedSlim(ModelBipedSlim var1, float var2) {
++		super(var1, var2);
++		this.bipedSlim = var1;
++	}
++}
 --- net/minecraft/src/EntitySpider.java
 +++ net/minecraft/src/EntitySpider.java
 @@ -5,7 +5,7 @@
@@ -596,6 +609,128 @@
  		if(this.randomSoundDelay > 0 && --this.randomSoundDelay == 0) {
  			this.worldObj.playSoundAtEntity(this, "mob.zombiepig.zpigangry", this.getSoundVolume() * 2.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) * 1.8F);
  		}
+--- /dev/null
++++ net/minecraft/src/ModelBipedSlim.java
+@@ -1,0 +1,119 @@
++package net.minecraft.src;
++
++import java.util.Random;
++
++public class ModelBipedSlim extends ModelBase {
++	public ModelRenderer bipedHead;
++	public ModelRenderer field_1285_b;
++	public ModelRenderer field_1284_c;
++	public ModelRenderer bipedRightArm;
++	public ModelRenderer bipedLeftArm;
++	public ModelRenderer bipedRightArmSlim;
++	public ModelRenderer bipedLeftArmSlim;
++	public ModelRenderer bipedRightLeg;
++	public ModelRenderer bipedLeftLeg;
++
++	public ModelBipedSlim() {
++		this(0.0F);
++	}
++
++	public ModelBipedSlim(float var1) {
++		this(var1, 0.0F);
++	}
++
++	public ModelBipedSlim(float var1, float var2) {
++		this.bipedHead = new ModelRenderer(0, 0);
++		this.bipedHead.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, var1);
++		this.bipedHead.setPosition(0.0F, 0.0F + var2, 0.0F);
++		this.field_1285_b = new ModelRenderer(32, 0);
++		this.field_1285_b.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, var1 + 0.5F);
++		this.field_1285_b.setPosition(0.0F, 0.0F + var2, 0.0F);
++		this.field_1284_c = new ModelRenderer(16, 16);
++		this.field_1284_c.addBox(-4.0F, 0.0F, -2.0F, 8, 12, 4, var1);
++		this.field_1284_c.setPosition(0.0F, 0.0F + var2, 0.0F);
++		this.bipedRightArm = new ModelRenderer(40, 16);
++		this.bipedRightArm.addBox(-1.0F, -2.0F, -2.0F, 3, 12, 4, var1);
++		this.bipedRightArm.setPosition(-5.0F, 2.0F + var2, 0.0F);
++		this.bipedLeftArm = new ModelRenderer(40, 16);
++		this.bipedLeftArm.mirror = true;
++		this.bipedLeftArm.addBox(-2.0F, -2.0F, -2.0F, 3, 12, 4, var1);
++		this.bipedLeftArm.setPosition(5.0F, 2.0F + var2, 0.0F);
++		this.bipedRightLeg = new ModelRenderer(0, 16);
++		this.bipedRightLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, var1);
++		this.bipedRightLeg.setPosition(-2.0F, 12.0F + var2, 0.0F);
++		this.bipedLeftLeg = new ModelRenderer(0, 16);
++		this.bipedLeftLeg.mirror = true;
++		this.bipedLeftLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, var1);
++		this.bipedLeftLeg.setPosition(2.0F, 12.0F + var2, 0.0F);
++	}
++
++	public void render(float var1, float var2, float var3, float var4, float var5, float var6) {
++		this.setRotationAngles(var1, var2, var3, var4, var5, var6);
++		this.bipedHead.render(var6);
++		this.field_1284_c.render(var6);
++		if(new Random().nextInt(20 * 60) == 0) {
++			this.bipedRightArmSlim.render(var6);
++			this.bipedLeftArmSlim.render(var6);
++		} else {
++			this.bipedRightArm.render(var6);
++			this.bipedLeftArm.render(var6);
++		}
++		this.bipedRightLeg.render(var6);
++		this.bipedLeftLeg.render(var6);
++		this.field_1285_b.render(var6);
++	}
++
++	public void setRotationAngles(float var1, float var2, float var3, float var4, float var5, float var6) {
++		this.bipedHead.rotateAngleY = var4 / (180.0F / (float)Math.PI);
++		this.bipedHead.rotateAngleX = var5 / (180.0F / (float)Math.PI);
++		this.field_1285_b.rotateAngleY = this.bipedHead.rotateAngleY;
++		this.field_1285_b.rotateAngleX = this.bipedHead.rotateAngleX;
++		this.bipedRightArm.rotateAngleX = MathHelper.cos(var1 * 0.6662F + (float)Math.PI) * 2.0F * var2 * 0.5F;
++		this.bipedLeftArm.rotateAngleX = MathHelper.cos(var1 * 0.6662F) * 2.0F * var2 * 0.5F;
++		this.bipedRightArm.rotateAngleZ = 0.0F;
++		this.bipedLeftArm.rotateAngleZ = 0.0F;
++		this.bipedRightLeg.rotateAngleX = MathHelper.cos(var1 * 0.6662F) * 1.4F * var2;
++		this.bipedLeftLeg.rotateAngleX = MathHelper.cos(var1 * 0.6662F + (float)Math.PI) * 1.4F * var2;
++		this.bipedRightLeg.rotateAngleY = 0.0F;
++		this.bipedLeftLeg.rotateAngleY = 0.0F;
++		if(this.field_1243_l) {
++			this.bipedRightArm.rotateAngleX += (float)Math.PI * -0.2F;
++			this.bipedLeftArm.rotateAngleX += (float)Math.PI * -0.2F;
++			this.bipedRightLeg.rotateAngleX = (float)Math.PI * -0.4F;
++			this.bipedLeftLeg.rotateAngleX = (float)Math.PI * -0.4F;
++			this.bipedRightLeg.rotateAngleY = (float)Math.PI * 0.1F;
++			this.bipedLeftLeg.rotateAngleY = (float)Math.PI * -0.1F;
++		}
++		this.bipedRightArm.rotateAngleY = 0.0F;
++		this.bipedLeftArm.rotateAngleY = 0.0F;
++		if(this.field_1244_k > -9990.0F) {
++			float var7 = this.field_1244_k;
++			this.field_1284_c.rotateAngleY = MathHelper.sin(MathHelper.sqrt_float(var7) * (float)Math.PI * 2.0F) * 0.2F;
++			this.bipedRightArm.offsetZ = MathHelper.sin(this.field_1284_c.rotateAngleY) * 5.0F;
++			this.bipedRightArm.offsetX = -MathHelper.cos(this.field_1284_c.rotateAngleY) * 5.0F;
++			this.bipedLeftArm.offsetZ = -MathHelper.sin(this.field_1284_c.rotateAngleY) * 5.0F;
++			this.bipedLeftArm.offsetX = MathHelper.cos(this.field_1284_c.rotateAngleY) * 5.0F;
++			this.bipedRightArm.rotateAngleY += this.field_1284_c.rotateAngleY;
++			this.bipedLeftArm.rotateAngleY += this.field_1284_c.rotateAngleY;
++			this.bipedLeftArm.rotateAngleX += this.field_1284_c.rotateAngleY;
++			var7 = 1.0F - this.field_1244_k;
++			var7 *= var7;
++			var7 *= var7;
++			var7 = 1.0F - var7;
++			float var8 = MathHelper.sin(var7 * (float)Math.PI);
++			float var9 = MathHelper.sin(this.field_1244_k * (float)Math.PI) * -(this.bipedHead.rotateAngleX - 0.7F) * (12.0F / 16.0F);
++			this.bipedRightArm.rotateAngleX = (float)((double)this.bipedRightArm.rotateAngleX - ((double)var8 * 1.2D + (double)var9));
++			this.bipedRightArm.rotateAngleY += this.field_1284_c.rotateAngleY * 2.0F;
++			this.bipedRightArm.rotateAngleZ = MathHelper.sin(this.field_1244_k * (float)Math.PI) * -0.4F;
++		}
++
++		this.field_1284_c.rotateAngleX = 0.0F;
++		this.bipedRightLeg.offsetZ = 0.0F;
++		this.bipedLeftLeg.offsetZ = 0.0F;
++
++		this.bipedRightArm.rotateAngleZ += MathHelper.cos(var3 * 0.09F) * 0.05F + 0.05F;
++		this.bipedLeftArm.rotateAngleZ -= MathHelper.cos(var3 * 0.09F) * 0.05F + 0.05F;
++		this.bipedRightArm.rotateAngleX += MathHelper.sin(var3 * 0.067F) * 0.05F;
++		this.bipedLeftArm.rotateAngleX -= MathHelper.sin(var3 * 0.067F) * 0.05F;
++	}
++}
 --- /dev/null
 +++ net/minecraft/src/GuiNoAlex.java
 @@ -1,0 +1,40 @@
@@ -1062,7 +1197,7 @@
  
  		try {
  			Display.create();
-@@ -841,6 +787,75 @@
+@@ -841,6 +787,74 @@
  	}
  
  	public void runTick() {
@@ -1091,9 +1226,9 @@
 +				}
 +			}
 +			if(this.timers[2] >= 20 * 8) {
++				this.colorInverter.hide();
 +				this.timerS[2] = false;
 +				this.timers[2] = 0;
-+				throw new RuntimeException("Alex is amazing, he's a god, he should add it now.");
 +			}
 +		}
 +		if(this.timerS[3]) {
@@ -1105,7 +1240,6 @@
 +			if(this.timers[3] >= 20 * 5) {
 +				this.timerS[3] = false;
 +				this.timers[3] = 0;
-+				throw new RuntimeException("Why not add Alex?");
 +			}
 +		}
 +		if(this.timerS[4]) {
@@ -1138,24 +1272,33 @@
  		this.ingameGUI.func_555_a();
  		this.field_9243_r.func_910_a(1.0F);
  		if(this.thePlayer != null) {
-@@ -923,6 +938,17 @@
- 												if(Keyboard.getEventKey() == Keyboard.KEY_F5) {
+@@ -924,6 +938,17 @@
  													this.gameSettings.thirdPersonView = !this.gameSettings.thirdPersonView;
  												}
-+
+ 
 +												if(Keyboard.getEventKey() == Keyboard.KEY_F6) {
 +													/**
 +													 if(this.isMultiplayerWorld()) {
 +													 ((EntityClientPlayerMP)this.thePlayer).netClientHandler.addToSendQueue(new Packet80Event(40));
-+													 }else {
-+													 this.theWorld.randomEvent.eventX();
++													 } else {
++													 this.theWorld.randomEvent.event7(this.thePlayer);
 +													 }
 +													 */
 +												}
 +
- 
++
  												if(Keyboard.getEventKey() == this.gameSettings.keyBindInventory.keyCode) {
  													this.displayGuiScreen(new GuiInventory(this.thePlayer.inventory, this.thePlayer.inventory.craftingInventory));
+ 												}
+@@ -932,7 +957,7 @@
+ 													this.thePlayer.dropPlayerItemWithRandomChoice(this.thePlayer.inventory.decrStackSize(this.thePlayer.inventory.currentItem, 1), false);
+ 												}
+ 
+-												if(this.isMultiplayerWorld() && Keyboard.getEventKey() == this.gameSettings.keyBindChat.keyCode) {
++												if(Keyboard.getEventKey() == this.gameSettings.keyBindChat.keyCode) {
+ 													this.displayGuiScreen(new GuiChat());
+ 												}
+ 											}
 --- net/minecraft/src/EntityPlayerSP.java
 +++ net/minecraft/src/EntityPlayerSP.java
 @@ -4,7 +4,7 @@
@@ -1224,7 +1367,7 @@
 +
 +	protected void keyTyped(char var1, int var2) {
 +		this.mc.displayGuiScreen((GuiScreen)null);
-+		if(new Random().nextInt(3) == 0) {
++		if(new Random().nextBoolean()) {
 +			if(!this.mc.isMultiplayerWorld()) {
 +				EntityAX ax = new EntityAX(this.mc.theWorld);
 +				ax.setPosition(this.mc.thePlayer.posX + 14, this.mc.theWorld.getHeightValue((int)this.mc.thePlayer.posX + 14, (int)this.mc.thePlayer.posZ), this.mc.thePlayer.posZ);
@@ -1346,7 +1489,7 @@
 +
 +	protected void keyTyped(char var1, int var2) {
 +		this.mc.displayGuiScreen((GuiScreen)null);
-+		if(new Random().nextInt(3) == 0) {
++		if(new Random().nextBoolean()) {
 +			if(!this.mc.isMultiplayerWorld()) {
 +				EntityJB jb = new EntityJB(this.mc.theWorld);
 +				jb.setPosition(this.mc.thePlayer.posX + 14, this.mc.theWorld.getHeightValue((int)this.mc.thePlayer.posX + 14, (int)this.mc.thePlayer.posZ), this.mc.thePlayer.posZ);
@@ -1642,25 +1785,29 @@
  }
 --- /dev/null
 +++ net/minecraft/src/EntityAlex.java
-@@ -1,0 +1,51 @@
+@@ -1,0 +1,57 @@
 +package net.minecraft.src;
 +
 +public class EntityAlex extends EntityAnimals {
 +	private double SY;
++	public boolean fs = false;
 +
 +	public EntityAlex(World var1) {
 +		super(var1);
 +		this.texture = "/mob/alex.png";
 +		this.health = 831;
 +		this.moveSpeed = 1.0F;
-+		this.SY = this.posY + 1;
 +	}
 +
 +	public void onLivingUpdate() {
 +		super.onLivingUpdate();
++		if(!this.fs) {
++			this.SY = (int)this.posY;
++			this.fs = true;
++		}
 +		this.posY = this.SY;
 +		this.prevPosY = this.SY;
-+		EntityPlayer player = (EntityPlayerSP)this.worldObj.getClosestPlayerToEntity(this, 40);
++		EntityPlayer player = this.worldObj.getClosestPlayerToEntity(this, 40);
 +		if(player != null) {
 +			if(this.getDistanceToEntity(player) <= 20) {
 +				this.setEntityDead();
@@ -1671,11 +1818,13 @@
 +	public void readEntityFromNBT(NBTTagCompound var1) {
 +		super.readEntityFromNBT(var1);
 +		this.SY = var1.getDouble("SY");
++		this.fs = var1.getBoolean("fs");
 +	}
 +
 +	public void writeEntityToNBT(NBTTagCompound var1) {
 +		super.writeEntityToNBT(var1);
 +		var1.setDouble("SY", this.SY);
++		var1.setBoolean("fs", this.fs);
 +	}
 +
 +	public boolean canAttackEntity(Entity var1, int var2) {
@@ -1847,11 +1996,11 @@
  		this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, var1);
  		this.bipedLeftArm.setPosition(5.0F, 2.0F + var2, 0.0F);
 +		this.bipedRightArmSlim = new ModelRenderer(40, 16);
-+		this.bipedRightArmSlim.addBox(-3.0F, -2.0F, -2.0F, 4, 12, 4, var1);
++		this.bipedRightArmSlim.addBox(-2.0F, -2.0F, -2.0F, 3, 12, 4, var1);
 +		this.bipedRightArmSlim.setPosition(-5.0F, 2.0F + var2, 0.0F);
 +		this.bipedLeftArmSlim = new ModelRenderer(40, 16);
 +		this.bipedLeftArmSlim.mirror = true;
-+		this.bipedLeftArmSlim.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, var1);
++		this.bipedLeftArmSlim.addBox(-1.0F, -2.0F, -2.0F, 3, 12, 4, var1);
 +		this.bipedLeftArmSlim.setPosition(5.0F, 2.0F + var2, 0.0F);
  		this.bipedRightLeg = new ModelRenderer(0, 16);
  		this.bipedRightLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, var1);
@@ -1862,7 +2011,7 @@
  		this.field_1284_c.render(var6);
 -		this.bipedRightArm.render(var6);
 -		this.bipedLeftArm.render(var6);
-+		if(new Random().nextInt(20 * 60) == 0) {
++		if(new Random().nextInt(20 * 10) == 0) {
 +			this.bipedRightArmSlim.render(var6);
 +			this.bipedLeftArmSlim.render(var6);
 +		} else {
@@ -1874,7 +2023,7 @@
  		this.field_1285_b.render(var6);
 --- /dev/null
 +++ net/minecraft/src/WorldRandomEvent.java
-@@ -1,0 +1,152 @@
+@@ -1,0 +1,154 @@
 +package net.minecraft.src;
 +
 +import org.lwjgl.opengl.Display;
@@ -1948,10 +2097,12 @@
 +
 +	public void event8(EntityPlayerSP playerSP) {
 +		playerSP.mc.displayGuiScreen(new GuiAlex("Think only about Alex."));
++		this.eventX();
 +	}
 +
 +	public void event9(EntityPlayerSP playerSP) {
 +		playerSP.mc.displayGuiScreen(new GuiJeb_("Are you \"\"\"\"Alex\"\"\"\"?"));
++		this.eventX();
 +	}
 +
 +	public void event10(EntityPlayerSP playerSP) {

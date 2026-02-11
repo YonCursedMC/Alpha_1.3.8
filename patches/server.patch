@@ -663,22 +663,26 @@
  			return false;
 --- /dev/null
 +++ net/minecraft/src/EntityAlex.java
-@@ -1,0 +1,51 @@
+@@ -1,0 +1,57 @@
 +package net.minecraft.src;
 +
 +public class EntityAlex extends EntityAnimals {
 +	private double SY;
++	public boolean fs = false;
 +
 +	public EntityAlex(World var1) {
 +		super(var1);
 +		this.texture = "/mob/alex.png";
 +		this.health = 831;
 +		this.moveSpeed = 1.0F;
-+		this.SY = this.posY + 1;
 +	}
 +
 +	public void onLivingUpdate() {
 +		super.onLivingUpdate();
++		if(!this.fs) {
++			this.SY = (int)this.posY;
++			this.fs = true;
++		}
 +		this.posY = this.SY;
 +		this.prevPosY = this.SY;
 +		EntityPlayer player = this.worldObj.getClosestPlayerToEntity(this, 40);
@@ -692,14 +696,16 @@
 +	public void readEntityFromNBT(NBTTagCompound var1) {
 +		super.readEntityFromNBT(var1);
 +		this.SY = var1.getDouble("SY");
++		this.fs = var1.getBoolean("fs");
 +	}
 +
 +	public void writeEntityToNBT(NBTTagCompound var1) {
 +		super.writeEntityToNBT(var1);
 +		var1.setDouble("SY", this.SY);
++		var1.setBoolean("fs", this.fs);
 +	}
 +
-+	public boolean canAttackEntity(Entity var1, int var2) {
++	public boolean attackEntity(Entity var1, int var2) {
 +		return false;
 +	}
 +
@@ -901,7 +907,7 @@
 +}
 --- /dev/null
 +++ net/minecraft/src/WorldRandomEvent.java
-@@ -1,0 +1,155 @@
+@@ -1,0 +1,174 @@
 +package net.minecraft.src;
 +
 +import java.util.List;
@@ -970,16 +976,32 @@
 +
 +	public void event8(EntityPlayerMP playerSP) {
 +		playerSP.netServerHandler.sendPacket(new Packet80Event(20));
++		this.eventX();
 +	}
 +
 +	public void event9(EntityPlayerMP playerSP) {
 +		playerSP.netServerHandler.sendPacket(new Packet80Event(21));
++		this.eventX();
 +	}
 +
 +	public void event10(EntityPlayerMP playerSP) {
 +		EntityJeb_ jeb_ = new EntityJeb_(this.worldObj);
 +		jeb_.setPosition(playerSP.posX + 60, this.worldObj.getHeightValue((int)playerSP.posX + 60, (int)playerSP.posZ), playerSP.posZ);
 +		this.worldObj.entityJoinedWorld(jeb_);
++		this.eventX();
++	}
++
++	public void event11(EntityPlayerMP playerSP) {
++		for(int i = -48; i < 48; i++) {
++			for(int j = -32; j < 32; j++) {
++				for(int k = -48; k < 48; k++) {
++					int blocks = this.worldObj.getBlockId((int)playerSP.posX + i, (int)playerSP.posY + j, (int)playerSP.posZ + k);
++					if(blocks == Block.leaves.blockID) {
++						this.worldObj.setBlockWithNotify((int)playerSP.posX + i, (int)playerSP.posY + j, (int)playerSP.posZ + k, 0);
++					}
++				}
++			}
++		}
 +		this.eventX();
 +	}
 +
@@ -1021,6 +1043,9 @@
 +					break;
 +				case 10:
 +					this.event10(playerSP);
++					break;
++				case 11:
++					this.event11(playerSP);
 +					break;
 +				}
 +				if(this.timerS[0]) {
