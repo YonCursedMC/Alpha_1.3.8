@@ -55,59 +55,61 @@ https://github.com/YonCursedMC/Alpha_1.3.8/releases<br>
 ありがとうございます！<br><br>
 
 最終的にワールドに入れなくなるので注意です。
+
 ---------
 
 # EN
 
-## Caution
-- This version was not officially released by Mojang, nor is it officially certified.
-- The creator assumes no responsibility for any damage caused by playing this version.
-- Unauthorized reproduction is prohibited. If discovered, please report it.
-- Due to the MCP license, the code will not be released, but patches will be released.
-- Contains many flashing, pranks, and horror sounds. Please be careful when playing.
-- Please prepare a PC with a decent CPU, video card, and RAM.
-- If using this for live commentary, please credit the URL of this version.
-- Windows PC is recommended. Some of the strange behavior may not occur on Android, etc.
-- Occasionally, dangerous behavior may occur. Use at your own risk.
+## Notes
+- This version is **not** officially released or endorsed by Mojang.
+- The creator assumes **no responsibility** for any damage caused by playing this version.
+- **Unauthorized redistribution is prohibited.** If discovered, it will be reported.
+- Due to the MCP license, the source code will not be published, but patches will be released.
+- This version contains many flashing effects, jump scares, and horror sounds. Please proceed with caution.
+- A PC with a reasonably powerful CPU, GPU, and sufficient RAM is recommended.
+- If you use this version in a gameplay video or stream, please include a credit link to this version’s URL.
+- Windows PC is recommended. Some anomalies may not occur on Android.
+- The game may behave unpredictably at times. Run it at your own risk.
 
 ## How to Run
 
 ### Client
-Required: Java 8 (zulu recommended)<br>
+Requirements: Java 8 (Zulu recommended)  
 https://www.azul.com/downloads/?version=java-8-lts&os=windows&architecture=x86-64-bit&package=jdk#zulu
 
-1. Download the client zip file.<br>
-https://github.com/YonCursedMC/Alpha_1.3.8/releases<br>
-The top link here is ``Alpha_1.3.8.zip```<br>
+1. Download the client ZIP file:  
+   https://github.com/YonCursedMC/Alpha_1.3.8/releases  
+   Download the top file named `Alpha_1.3.8.zip`.
 
-2. MultiMC<br>
-https://multimc.org/#Download<br>
-https://prismlauncher.org/download/windows/<br>
+2. Install MultiMC:  
+   https://multimc.org/#Download  
+   https://prismlauncher.org/download/windows/  
+   After installation, drag and drop the ZIP file you downloaded in step 1 into MultiMC (or PrismLauncher if you prefer).
 
-Install MultiMC, and once the installation is complete, drag and drop the zip file downloaded in step 1. (Prism Launcher is also acceptable if available.)<br>
-
-3. Once installed, specify the Java 8 version of zulu you just installed in the Java installation dialog, adjust the memory allocation as needed, and click Launch.<br>
+3. Once installed, set the Java path to the Zulu Java 8 you installed earlier, adjust memory allocation as needed, and click Launch.
 
 4. Enjoy!
 
 ### Server
-It's the same as a regular Minecraft server. Please do your own research and try it out.
-*It works differently from the client, is not perfect, and has many bugs! Please be tolerant of bugs when playing!
-Be sure to run it in offline mode! (It is turned off by default)
+It works the same way as a normal Minecraft server. Please look up the setup process yourself.  
+*Note: The server behaves differently from the client. It is not perfect and contains many bugs. Please be tolerant of them.*  
+Be sure to run it in **offline mode**! (It is off by default.)
 
-https://github.com/YonCursedMC/Alpha_1.3.8/releases<br>
+Download:  
+https://github.com/YonCursedMC/Alpha_1.3.8/releases
 
 ## Credits
-Credits
-### Texture Creator
-- Tei
-### Sound
-- pixabay<br>
-https://pixabay.com<br>
-- ConfyUI, Stable Audio Open (AI)
-### Partial Code (AI)
-- ChatGPT
-### Tools
-Thank you!<br><br>
+### Texture Artist
+- てぃ
 
-Be careful, as you will eventually be unable to enter the world.
+### Sound
+- Self‑made?
+
+### Partial Code (AI)
+- Copilot  
+- Claude
+
+### Tools
+Thank you!
+
+**Be aware that eventually you will no longer be able to enter the world.**
