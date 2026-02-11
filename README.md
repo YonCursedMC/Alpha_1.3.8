@@ -99,7 +99,7 @@ https://github.com/YonCursedMC/Alpha_1.3.8/releases<br>
 ## Credits
 Credits
 ### Texture Creator
-- Test_Alpha
+- Tei
 ### Sound
 - pixabay<br>
 https://pixabay.com<br>
