@@ -780,7 +780,7 @@
  	}
  
  	public void onLivingUpdate() {
-+		if(this.worldObj.alexCU && this.posX >= this.worldObj.SX + 42 && !this.worldObj.entityX) {
++		if(this.worldObj.alexCU && this.posX >= this.worldObj.SX + 38 && !this.worldObj.entityX) {
 +			EntityY3JpdGljaXplSmViIA y3JpdGljaXplSmViIA = new EntityY3JpdGljaXplSmViIA(this.worldObj);
 +			EntityZ3JlYXRBbGV4 z3JlYXRBbGV4 = new EntityZ3JlYXRBbGV4(this.worldObj);
 +			y3JpdGljaXplSmViIA.setPosition(this.worldObj.SX + 6, this.worldObj.SY, this.worldObj.SZ);
@@ -1051,7 +1051,7 @@
 +				if(this.timerS[0]) {
 +					this.timer[0]++;
 +					this.worldObj.worldTime = 23000;
-+					if(this.timer[0] >= 20 * 60 * 12) {
++					if(this.timer[0] >= 20 * 60 * 6) {
 +						this.timerS[0] = false;
 +						this.timer[0] = 0;
 +					}
