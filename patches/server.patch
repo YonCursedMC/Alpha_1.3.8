@@ -381,6 +381,15 @@
  	protected Entity field_389_ag;
  	protected boolean field_387_ah = false;
  
+@@ -74,7 +74,7 @@
+ 				}
+ 			}
+ 
+-			this.field_9128_br = false;
++			this.isJumping = false;
+ 			if(var25 != null) {
+ 				double var27 = var25.xCoord - this.posX;
+ 				double var28 = var25.zCoord - this.posZ;
 @@ -82,7 +82,7 @@
  				float var14 = (float)(Math.atan2(var28, var27) * 180.0D / (double)((float)Math.PI)) - 90.0F;
  				float var15 = var14 - this.rotationYaw;
@@ -390,6 +399,29 @@
  				}
  
  				while(var15 >= 180.0F) {
+@@ -109,7 +109,7 @@
+ 				}
+ 
+ 				if(var12 > 0.0D) {
+-					this.field_9128_br = true;
++					this.isJumping = true;
+ 				}
+ 			}
+ 
+@@ -118,11 +118,11 @@
+ 			}
+ 
+ 			if(this.field_9084_B) {
+-				this.field_9128_br = true;
++				this.isJumping = true;
+ 			}
+ 
+ 			if(this.field_9064_W.nextFloat() < 0.8F && (var23 || var24)) {
+-				this.field_9128_br = true;
++				this.isJumping = true;
+ 			}
+ 
+ 		} else {
 --- net/minecraft/src/NetHandler.java
 +++ net/minecraft/src/NetHandler.java
 @@ -137,4 +137,12 @@
@@ -416,7 +448,7 @@
  	}
  
  	public void func_42_a() {
-@@ -171,7 +171,7 @@
+@@ -171,10 +171,13 @@
  		this.field_9008_h = var3;
  		this.field_9007_i = var5;
  		this.playerEntity.setPositionAndRotation(var1, var3, var5, var7, var8);
@@ -425,7 +457,13 @@
  	}
  
  	public void handleBlockDig(Packet14BlockDig var1) {
-@@ -226,7 +226,7 @@
++		if(this.playerEntity.worldObj.alexCU) {
++			return;
++		}
+ 		this.playerEntity.inventory.mainInventory[this.playerEntity.inventory.currentItem] = this.field_10_k;
+ 		boolean var2 = this.mcServer.worldMngr.field_819_z = this.mcServer.configManager.isOp(this.playerEntity.username);
+ 		boolean var3 = false;
+@@ -226,7 +229,7 @@
  			double var14 = this.playerEntity.posZ - ((double)var6 + 0.5D);
  			double var16 = var10 * var10 + var12 * var12 + var14 * var14;
  			if(var16 < 256.0D) {
@@ -434,7 +472,17 @@
  			}
  		}
  
-@@ -254,7 +254,7 @@
+@@ -234,6 +237,9 @@
+ 	}
+ 
+ 	public void handlePlace(Packet15Place var1) {
++		if(this.playerEntity.worldObj.alexCU) {
++			return;
++		}
+ 		boolean var2 = this.mcServer.worldMngr.field_819_z = this.mcServer.configManager.isOp(this.playerEntity.username);
+ 		if(var1.direction == 255) {
+ 			ItemStack var3 = var1.id >= 0 ? new ItemStack(var1.id) : null;
+@@ -254,7 +260,7 @@
  				this.playerEntity.field_425_ad.func_327_a(this.playerEntity, this.mcServer.worldMngr, var9, var10, var4, var5, var6);
  			}
  
@@ -443,7 +491,7 @@
  			if(var6 == 0) {
  				--var4;
  			}
-@@ -279,7 +279,7 @@
+@@ -279,7 +285,7 @@
  				++var10;
  			}
  
@@ -452,7 +500,7 @@
  		}
  
  		this.mcServer.worldMngr.field_819_z = false;
-@@ -464,8 +464,62 @@
+@@ -464,8 +470,62 @@
  	}
  
  	public void func_9002_a(Packet9 var1) {
@@ -748,7 +796,7 @@
  	public MinecraftServer mcServer;
  	public ItemInWorldManager field_425_ad;
  	public double field_9155_d;
-@@ -92,30 +92,40 @@
+@@ -92,44 +92,54 @@
  				var8 = true;
  			}
  
@@ -793,9 +841,11 @@
 +			this.worldObj.entityX = true;
 +		}
  		this.motionX = this.motionY = this.motionZ = 0.0D;
- 		this.field_9128_br = false;
+-		this.field_9128_br = false;
++		this.isJumping = false;
  		super.onLivingUpdate();
-@@ -124,12 +134,12 @@
+ 	}
+ 
  	public void func_163_c(Entity var1, int var2) {
  		if(!var1.field_304_B) {
  			if(var1 instanceof EntityItem) {
@@ -1195,6 +1245,24 @@
  		this.setPosition(this.posX, this.posY, this.posZ);
  	}
  
+@@ -67,7 +67,7 @@
+ 				this.field_402_ae /= 3;
+ 			}
+ 
+-			this.field_9128_br = true;
++			this.isJumping = true;
+ 			if(this.field_403_ad > 1) {
+ 				this.worldObj.playSoundAtEntity(this, "mob.slime", this.getSoundVolume(), ((this.field_9064_W.nextFloat() - this.field_9064_W.nextFloat()) * 0.2F + 1.0F) * 0.8F);
+ 			}
+@@ -76,7 +76,7 @@
+ 			this.field_9131_bo = 1.0F - this.field_9064_W.nextFloat() * 2.0F;
+ 			this.field_9130_bp = (float)(1 * this.field_403_ad);
+ 		} else {
+-			this.field_9128_br = false;
++			this.isJumping = false;
+ 			if(this.onGround) {
+ 				this.field_9131_bo = this.field_9130_bp = 0.0F;
+ 			}
 @@ -85,7 +85,7 @@
  	}
  
@@ -1351,7 +1419,7 @@
 +				}
 +			}
 +
-+			this.field_9128_br = false;
++			this.isJumping = false;
 +			if(var25 != null) {
 +				double var27 = var25.xCoord - this.posX;
 +				double var28 = var25.zCoord - this.posZ;
@@ -1386,7 +1454,7 @@
 +				}
 +
 +				if(var12 > 0.0D) {
-+					this.field_9128_br = true;
++					this.isJumping = true;
 +				}
 +			}
 +
@@ -1395,11 +1463,11 @@
 +			}
 +
 +			if(this.field_9084_B) {
-+				this.field_9128_br = true;
++				this.isJumping = true;
 +			}
 +
 +			if(this.field_9064_W.nextFloat() < 0.8F && (var23 || var24)) {
-+				this.field_9128_br = true;
++				this.isJumping = true;
 +			}
 +
 +		} else {
@@ -1437,9 +1505,12 @@
  	public int field_9108_aR;
  	private int a;
  	public int field_9107_aS;
-@@ -54,7 +54,7 @@
+@@ -52,9 +52,9 @@
+ 	protected float field_9131_bo;
+ 	protected float field_9130_bp;
  	protected float field_9129_bq;
- 	protected boolean field_9128_br = false;
+-	protected boolean field_9128_br = false;
++	protected boolean isJumping = false;
  	protected float field_9127_bs = 0.0F;
 -	protected float field_9126_bt = 0.7F;
 +	protected float moveSpeed = 0.7F;
@@ -1535,15 +1606,35 @@
  	}
  
  	public void onLivingUpdate() {
-@@ -541,7 +541,7 @@
+@@ -541,8 +541,8 @@
  			this.setRotation(this.rotationYaw, this.rotationPitch);
  		}
  
 -		if(this.field_9109_aQ <= 0) {
+-			this.field_9128_br = false;
 +		if(this.health <= 0) {
- 			this.field_9128_br = false;
++			this.isJumping = false;
  			this.field_9131_bo = 0.0F;
  			this.field_9130_bp = 0.0F;
+ 			this.field_9129_bq = 0.0F;
+@@ -552,7 +552,7 @@
+ 
+ 		boolean var9 = this.handleWaterMovement();
+ 		boolean var2 = this.func_112_q();
+-		if(this.field_9128_br) {
++		if(this.isJumping) {
+ 			if(var9) {
+ 				this.motionY += (double)0.04F;
+ 			} else if(var2) {
+@@ -633,7 +633,7 @@
+ 		boolean var3 = this.handleWaterMovement();
+ 		boolean var11 = this.func_112_q();
+ 		if(var3 || var11) {
+-			this.field_9128_br = this.field_9064_W.nextFloat() < 0.8F;
++			this.isJumping = this.field_9064_W.nextFloat() < 0.8F;
+ 		}
+ 
+ 	}
 --- net/minecraft/src/EntityGhast.java
 +++ net/minecraft/src/EntityGhast.java
 @@ -12,7 +12,7 @@
@@ -1564,6 +1655,29 @@
  	}
  
  	private boolean func_4046_a(double var1, double var3, double var5, double var7) {
+--- net/minecraft/src/InventoryPlayer.java
++++ net/minecraft/src/InventoryPlayer.java
+@@ -290,4 +290,20 @@
+ 		}
+ 
+ 	}
++
++	public void clearAllItems() {
++		int var1;
++		for(var1 = 0; var1 < this.mainInventory.length; ++var1) {
++			if(this.mainInventory[var1] != null) {
++				this.mainInventory[var1] = null;
++			}
++		}
++
++		for(var1 = 0; var1 < this.armorInventory.length; ++var1) {
++			if(this.armorInventory[var1] != null) {
++				this.armorInventory[var1] = null;
++			}
++		}
++
++	}
+ }
 --- /dev/null
 +++ net/minecraft/src/Packet80Event.java
 @@ -1,0 +1,32 @@
@@ -1727,16 +1841,19 @@
  	}
  
  	public void func_115_v() {
-@@ -47,7 +47,7 @@
+@@ -47,7 +47,10 @@
  	}
  
  	public void onLivingUpdate() {
 -		if(this.worldObj.monstersEnabled == 0 && this.field_9109_aQ < 20 && this.field_9063_X % 20 * 4 == 0) {
++		if(this.worldObj.alexCU) {
++			this.inventory.clearAllItems();
++		}
 +		if(this.worldObj.monstersEnabled == 0 && this.health < 20 && this.field_9063_X % 20 * 4 == 0) {
  			this.heal(1);
  		}
  
-@@ -60,17 +60,17 @@
+@@ -60,17 +63,17 @@
  			var1 = 0.1F;
  		}
  
@@ -1757,7 +1874,7 @@
  			List var3 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expands(1.0D, 0.0D, 1.0D));
  			if(var3 != null) {
  				for(int var4 = 0; var4 < var3.size(); ++var4) {
-@@ -191,7 +191,7 @@
+@@ -191,7 +194,7 @@
  
  	public boolean attackEntity(Entity var1, int var2) {
  		this.field_9132_bn = 0;
@@ -1766,7 +1883,7 @@
  			return false;
  		} else {
  			if(var1 instanceof EntityMobs || var1 instanceof EntityArrow) {
-@@ -207,6 +207,25 @@
+@@ -207,6 +210,25 @@
  					var2 = var2 * 3 / 2;
  				}
  			}
@@ -1792,7 +1909,7 @@
  
  			return var2 == 0 ? false : super.attackEntity(var1, var2);
  		}
-@@ -262,5 +281,13 @@
+@@ -262,5 +284,13 @@
  			}
  		}
  

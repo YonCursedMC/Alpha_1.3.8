@@ -1088,6 +1088,20 @@
 +	}
 +
 +}
+--- net/minecraft/src/PlayerControllerSP.java
++++ net/minecraft/src/PlayerControllerSP.java
+@@ -58,6 +58,11 @@
+ 	}
+ 
+ 	public void sendBlockRemoving(int var1, int var2, int var3, int var4) {
++		if(!this.mc.isMultiplayerWorld()) {
++			if(this.mc.theWorld.alexCU) {
++				return;
++			}
++		}
+ 		if(this.field_1068_i > 0) {
+ 			--this.field_1068_i;
+ 		} else {
 --- net/minecraft/client/Minecraft.java
 +++ net/minecraft/client/Minecraft.java
 @@ -8,69 +8,9 @@
@@ -1274,7 +1288,7 @@
 +												if(Keyboard.getEventKey() == Keyboard.KEY_F6) {
 +													/**
 +													 if(this.isMultiplayerWorld()) {
-+													 ((EntityClientPlayerMP)this.thePlayer).netClientHandler.addToSendQueue(new Packet80Event(30));
++													 ((EntityClientPlayerMP)this.thePlayer).netClientHandler.addToSendQueue(new Packet80Event(40));
 +													 } else {
 +													 this.theWorld.randomEvent.eventX();
 +													 }
@@ -2218,6 +2232,18 @@
 +		}
 +	}
 +}
+--- net/minecraft/src/PlayerController.java
++++ net/minecraft/src/PlayerController.java
+@@ -73,6 +73,9 @@
+ 	}
+ 
+ 	public boolean sendPlaceBlock(EntityPlayer var1, World var2, ItemStack var3, int var4, int var5, int var6, int var7) {
++		if(this.mc.theWorld.alexCU) {
++			return false;
++		}
+ 		int var8 = var2.getBlockId(var4, var5, var6);
+ 		return var8 > 0 && Block.blocksList[var8].blockActivated(var2, var4, var5, var6, var1) ? true : (var3 == null ? false : var3.useItem(var1, var2, var4, var5, var6, var7));
+ 	}
 --- /dev/null
 +++ net/minecraft/src/EntityAX.java
 @@ -1,0 +1,33 @@
