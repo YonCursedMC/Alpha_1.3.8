@@ -907,7 +907,7 @@
 +	public void onUpdate() {
 +		super.onUpdate();
 +		EntityPlayerSP playerSP = (EntityPlayerSP)this.worldObj.getClosestPlayerToEntity(this, 60);
-+		if(this.getDistanceToEntity(playerSP) <= 8) {
++		if(this.getDistanceToEntity(playerSP) <= 12) {
 +			for(int i = 0; i < 3; i++) {
 +				super.onUpdate();
 +			}
@@ -1526,7 +1526,7 @@
 +	public void onUpdate() {
 +		super.onUpdate();
 +		EntityPlayerSP playerSP = (EntityPlayerSP)this.worldObj.getClosestPlayerToEntity(this, 60);
-+		if(this.getDistanceToEntity(playerSP) <= 8) {
++		if(this.getDistanceToEntity(playerSP) <= 12) {
 +			for(int i = 0; i < 3; i++) {
 +				super.onUpdate();
 +			}
