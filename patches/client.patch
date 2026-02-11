@@ -892,7 +892,7 @@
  			var5 = var5 + "VM: " + System.getProperty("java.vm.name") + " (" + System.getProperty("java.vm.info") + "), " + System.getProperty("java.vm.vendor") + "\n";
 --- /dev/null
 +++ net/minecraft/src/EntityY3JpdGljaXplSmViIA.java
-@@ -1,0 +1,37 @@
+@@ -1,0 +1,39 @@
 +package net.minecraft.src;
 +
 +public class EntityY3JpdGljaXplSmViIA extends EntityAttack {
@@ -906,10 +906,12 @@
 +
 +	public void onUpdate() {
 +		super.onUpdate();
-+		EntityPlayerSP playerSP = (EntityPlayerSP)this.worldObj.getClosestPlayerToEntity(this, 60);
-+		if(this.getDistanceToEntity(playerSP) <= 12) {
-+			for(int i = 0; i < 3; i++) {
-+				super.onUpdate();
++		EntityPlayer player = this.worldObj.getClosestPlayerToEntity(this, 60);
++		if(player != null) {
++			if(this.getDistanceToEntity(player) <= 12) {
++				for(int i = 0; i < 3; i++) {
++					super.onUpdate();
++				}
 +			}
 +		}
 +	}
@@ -1511,7 +1513,7 @@
 +}
 --- /dev/null
 +++ net/minecraft/src/EntityZ3JlYXRBbGV4.java
-@@ -1,0 +1,37 @@
+@@ -1,0 +1,39 @@
 +package net.minecraft.src;
 +
 +public class EntityZ3JlYXRBbGV4 extends EntityAttack {
@@ -1525,10 +1527,12 @@
 +
 +	public void onUpdate() {
 +		super.onUpdate();
-+		EntityPlayerSP playerSP = (EntityPlayerSP)this.worldObj.getClosestPlayerToEntity(this, 60);
-+		if(this.getDistanceToEntity(playerSP) <= 12) {
-+			for(int i = 0; i < 3; i++) {
-+				super.onUpdate();
++		EntityPlayer player = this.worldObj.getClosestPlayerToEntity(this, 60);
++		if(player != null) {
++			if(this.getDistanceToEntity(player) <= 12) {
++				for(int i = 0; i < 3; i++) {
++					super.onUpdate();
++				}
 +			}
 +		}
 +	}

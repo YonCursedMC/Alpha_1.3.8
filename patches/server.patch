@@ -105,7 +105,7 @@
 +}
 --- /dev/null
 +++ net/minecraft/src/EntityZ3JlYXRBbGV4.java
-@@ -1,0 +1,37 @@
+@@ -1,0 +1,39 @@
 +package net.minecraft.src;
 +
 +public class EntityZ3JlYXRBbGV4 extends EntityAttack {
@@ -119,10 +119,12 @@
 +
 +	public void onUpdate() {
 +		super.onUpdate();
-+		EntityPlayer player = (EntityPlayer)this.worldObj.getClosestPlayerToEntity(this, 60);
-+		if(this.getDistanceToEntity(player) <= 12) {
-+			for(int i = 0; i < 3; i++) {
-+				super.onUpdate();
++		EntityPlayer player = this.worldObj.getClosestPlayerToEntity(this, 60);
++		if(player != null) {
++			if(this.getDistanceToEntity(player) <= 12) {
++				for(int i = 0; i < 3; i++) {
++					super.onUpdate();
++				}
 +			}
 +		}
 +	}
@@ -1061,9 +1063,9 @@
 +					this.worldObj.SY = (int)playerSP.posY;
 +					this.worldObj.SZ = (int)playerSP.posZ;
 +					new WorldGenAlexAndJeb_WeddingHall().generate(this.worldObj, this.worldObj.rand, this.worldObj.SX - 3, this.worldObj.SY - 3, this.worldObj.SZ - 3);
-+					playerSPList.forEach((e)->{
-+						e.setPosition(this.worldObj.SX, this.worldObj.SY, this.worldObj.SZ);
-+					});
++					for(EntityPlayerMP playerMP : playerSPList) {
++						playerMP.setPosition(this.worldObj.SX, this.worldObj.SY, this.worldObj.SZ);
++					}
 +					this.worldObj.alexCU = true;
 +					playerSP.mcServer.configManager.sendChatMessageToAllPlayersNoop("<jeb_> Why don’t you love Alex?");
 +				}
@@ -1212,7 +1214,7 @@
  				float var3 = ((float)(var1 / 2) - 0.5F) * (float)this.field_403_ad / 4.0F;
 --- /dev/null
 +++ net/minecraft/src/EntityY3JpdGljaXplSmViIA.java
-@@ -1,0 +1,37 @@
+@@ -1,0 +1,39 @@
 +package net.minecraft.src;
 +
 +public class EntityY3JpdGljaXplSmViIA extends EntityAttack {
@@ -1226,10 +1228,12 @@
 +
 +	public void onUpdate() {
 +		super.onUpdate();
-+		EntityPlayer player = (EntityPlayer)this.worldObj.getClosestPlayerToEntity(this, 48.0D);
-+		if(this.getDistanceToEntity(player) <= 12) {
-+			for(int i = 0; i < 3; i++) {
-+				super.onUpdate();
++		EntityPlayer player = this.worldObj.getClosestPlayerToEntity(this, 48.0D);
++		if(player != null) {
++			if(this.getDistanceToEntity(player) <= 12) {
++				for(int i = 0; i < 3; i++) {
++					super.onUpdate();
++				}
 +			}
 +		}
 +	}
