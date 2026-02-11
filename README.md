@@ -52,8 +52,9 @@ https://github.com/YonCursedMC/Alpha_1.3.8/releases<br>
 - Copilot
 - Claude
 ### ツール
-ありがとうございます！
+ありがとうございます！<br><br>
 
+最終的にワールドに入れなくなるので注意です。
 ---------
 
 # EN
@@ -107,4 +108,6 @@ https://pixabay.com<br>
 ### Partial Code (AI)
 - ChatGPT
 ### Tools
-Thank you!
+Thank you!<br><br>
+
+Be careful, as you will eventually be unable to enter the world.
