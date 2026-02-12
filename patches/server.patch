@@ -303,6 +303,17 @@
  
  		for(int var2 = 0; var2 < var1.size(); ++var2) {
  			this.func_479_b((Entity)var1.get(var2));
+--- net/minecraft/src/NetLoginHandler.java
++++ net/minecraft/src/NetLoginHandler.java
+@@ -86,7 +86,7 @@
+ 			var3.sendPacket(new Packet6SpawnPosition(this.mcServer.worldMngr.spawnX, this.mcServer.worldMngr.spawnY, this.mcServer.worldMngr.spawnZ));
+ 			this.mcServer.configManager.sendPacketToAllPlayers(new Packet3Chat("\u00a7e" + var2.username + " joined the game."));
+ 			this.mcServer.configManager.playerLoggedIn(var2);
+-			var3.func_41_a(var2.posX, var2.posY, var2.posZ, var2.rotationYaw, var2.rotationPitch);
++			var3.teleport(var2.posX, var2.posY, var2.posZ, var2.rotationYaw, var2.rotationPitch);
+ 			var3.func_40_d();
+ 			this.mcServer.field_6036_c.func_4108_a(var3);
+ 			var3.sendPacket(new Packet4UpdateTime(this.mcServer.worldMngr.worldTime));
 --- net/minecraft/src/EntityPig.java
 +++ net/minecraft/src/EntityPig.java
 @@ -5,7 +5,7 @@
@@ -448,22 +459,59 @@
  	}
  
  	public void func_42_a() {
-@@ -171,10 +171,13 @@
+@@ -162,19 +162,28 @@
+ 			this.mcServer.configManager.func_613_b(this.playerEntity);
+ 			this.playerEntity.func_9153_b(this.playerEntity.posY - var2, var1.onGround);
+ 		}
+-
+ 	}
+ 
+-	public void func_41_a(double var1, double var3, double var5, float var7, float var8) {
++	public void teleport(double var1, double var3, double var5, float var7, float var8) {
+ 		this.field_9006_j = false;
+ 		this.field_9009_g = var1;
  		this.field_9008_h = var3;
  		this.field_9007_i = var5;
  		this.playerEntity.setPositionAndRotation(var1, var3, var5, var7, var8);
 -		this.playerEntity.field_421_a.sendPacket(new Packet13PlayerLookMove(var1, var3 + (double)1.62F, var3, var5, var7, var8, false));
 +		this.playerEntity.netServerHandler.sendPacket(new Packet13PlayerLookMove(var1, var3 + (double)1.62F, var3, var5, var7, var8, false));
++	}
++
++	public void teleport(double var1, double var3, double var5) {
++		this.field_9006_j = false;
++		this.field_9009_g = var1;
++		this.field_9008_h = var3;
++		this.field_9007_i = var5;
++		this.playerEntity.setPositionAndRotation(var1, var3, var5, this.playerEntity.rotationYaw, playerEntity.rotationPitch);
++		this.playerEntity.netServerHandler.sendPacket(new Packet13PlayerLookMove(var1, var3 + (double)1.62F, var3, var5, this.playerEntity.rotationYaw, playerEntity.rotationPitch, false));
  	}
  
  	public void handleBlockDig(Packet14BlockDig var1) {
-+		if(this.playerEntity.worldObj.alexCU) {
-+			return;
-+		}
++		boolean alex = this.playerEntity.worldObj.alexCU;
  		this.playerEntity.inventory.mainInventory[this.playerEntity.inventory.currentItem] = this.field_10_k;
  		boolean var2 = this.mcServer.worldMngr.field_819_z = this.mcServer.configManager.isOp(this.playerEntity.username);
  		boolean var3 = false;
-@@ -226,7 +229,7 @@
+@@ -212,13 +221,17 @@
+ 
+ 		if(var1.status == 0) {
+ 			if(var19 > 16 || var2) {
+-				this.playerEntity.field_425_ad.func_324_a(var4, var5, var6);
++				if(!alex) {
++					this.playerEntity.field_425_ad.func_324_a(var4, var5, var6);
++				}
+ 			}
+ 		} else if(var1.status == 2) {
+ 			this.playerEntity.field_425_ad.func_328_a();
+ 		} else if(var1.status == 1) {
+ 			if(var19 > 16 || var2) {
+-				this.playerEntity.field_425_ad.func_326_a(var4, var5, var6, var18);
++				if(!alex) {
++					this.playerEntity.field_425_ad.func_326_a(var4, var5, var6, var18);
++				}
+ 			}
+ 		} else if(var1.status == 3) {
+ 			double var10 = this.playerEntity.posX - ((double)var4 + 0.5D);
+@@ -226,7 +239,7 @@
  			double var14 = this.playerEntity.posZ - ((double)var6 + 0.5D);
  			double var16 = var10 * var10 + var12 * var12 + var14 * var14;
  			if(var16 < 256.0D) {
@@ -472,18 +520,24 @@
  			}
  		}
  
-@@ -234,6 +237,9 @@
- 	}
+@@ -235,6 +248,7 @@
  
  	public void handlePlace(Packet15Place var1) {
-+		if(this.playerEntity.worldObj.alexCU) {
-+			return;
-+		}
  		boolean var2 = this.mcServer.worldMngr.field_819_z = this.mcServer.configManager.isOp(this.playerEntity.username);
++		boolean alex = this.playerEntity.worldObj.alexCU;
  		if(var1.direction == 255) {
  			ItemStack var3 = var1.id >= 0 ? new ItemStack(var1.id) : null;
-@@ -254,7 +260,7 @@
- 				this.playerEntity.field_425_ad.func_327_a(this.playerEntity, this.mcServer.worldMngr, var9, var10, var4, var5, var6);
+ 			this.playerEntity.field_425_ad.func_6154_a(this.playerEntity, this.mcServer.worldMngr, var3);
+@@ -250,11 +264,13 @@
+ 			}
+ 
+ 			if(var8 > 16 || var2) {
+-				ItemStack var9 = var1.id >= 0 ? new ItemStack(var1.id) : null;
+-				this.playerEntity.field_425_ad.func_327_a(this.playerEntity, this.mcServer.worldMngr, var9, var10, var4, var5, var6);
++				if(!alex) {
++					ItemStack var9 = var1.id >= 0 ? new ItemStack(var1.id) : null;
++					this.playerEntity.field_425_ad.func_327_a(this.playerEntity, this.mcServer.worldMngr, var9, var10, var4, var5, var6);
++				}
  			}
  
 -			this.playerEntity.field_421_a.sendPacket(new Packet53BlockChange(var10, var4, var5, this.mcServer.worldMngr));
@@ -491,7 +545,7 @@
  			if(var6 == 0) {
  				--var4;
  			}
-@@ -279,7 +285,7 @@
+@@ -279,7 +295,7 @@
  				++var10;
  			}
  
@@ -500,7 +554,7 @@
  		}
  
  		this.mcServer.worldMngr.field_819_z = false;
-@@ -464,8 +470,62 @@
+@@ -464,8 +480,62 @@
  	}
  
  	public void func_9002_a(Packet9 var1) {
@@ -641,7 +695,7 @@
 -		var2.field_421_a.sendPacket(new Packet9());
 -		var2.field_421_a.func_41_a(var2.posX, var2.posY, var2.posZ, var2.rotationYaw, var2.rotationPitch);
 +		var2.netServerHandler.sendPacket(new Packet9());
-+		var2.netServerHandler.func_41_a(var2.posX, var2.posY, var2.posZ, var2.rotationYaw, var2.rotationPitch);
++		var2.netServerHandler.teleport(var2.posX, var2.posY, var2.posZ, var2.rotationYaw, var2.rotationPitch);
  		this.playerManagerObj.func_9214_a(var2);
  		this.mcServer.worldMngr.entityJoinedWorld(var2);
  		this.playerEntities.add(var2);
@@ -796,7 +850,7 @@
  	public MinecraftServer mcServer;
  	public ItemInWorldManager field_425_ad;
  	public double field_9155_d;
-@@ -92,44 +92,54 @@
+@@ -92,44 +92,57 @@
  				var8 = true;
  			}
  
@@ -830,15 +884,18 @@
  	}
  
  	public void onLivingUpdate() {
-+		if(this.worldObj.alexCU && this.posX >= this.worldObj.SX + 38 && !this.worldObj.entityX) {
-+			EntityY3JpdGljaXplSmViIA y3JpdGljaXplSmViIA = new EntityY3JpdGljaXplSmViIA(this.worldObj);
-+			EntityZ3JlYXRBbGV4 z3JlYXRBbGV4 = new EntityZ3JlYXRBbGV4(this.worldObj);
-+			y3JpdGljaXplSmViIA.setPosition(this.worldObj.SX + 6, this.worldObj.SY, this.worldObj.SZ);
-+			z3JlYXRBbGV4.setPosition(this.worldObj.SX + 6, this.worldObj.SY, this.worldObj.SZ);
-+			this.mcServer.configManager.sendChatMessageToAllPlayersNoop("<jeb_> You created her.");
-+			this.worldObj.entityJoinedWorld(y3JpdGljaXplSmViIA);
-+			this.worldObj.entityJoinedWorld(z3JlYXRBbGV4);
-+			this.worldObj.entityX = true;
++		if(this.worldObj.alexCU) {
++			this.setPosition(this.posX, this.worldObj.SY + 1.62 - 1, this.posZ);
++			if(this.posX >= this.worldObj.SX + 38 && !this.worldObj.entityX) {
++				EntityY3JpdGljaXplSmViIA y3JpdGljaXplSmViIA = new EntityY3JpdGljaXplSmViIA(this.worldObj);
++				EntityZ3JlYXRBbGV4 z3JlYXRBbGV4 = new EntityZ3JlYXRBbGV4(this.worldObj);
++				y3JpdGljaXplSmViIA.setPosition(this.worldObj.SX + 6, this.worldObj.SY, this.worldObj.SZ);
++				z3JlYXRBbGV4.setPosition(this.worldObj.SX + 6, this.worldObj.SY, this.worldObj.SZ);
++				this.mcServer.configManager.sendChatMessageToAllPlayersNoop("<jeb_> You created her.");
++				this.worldObj.entityJoinedWorld(y3JpdGljaXplSmViIA);
++				this.worldObj.entityJoinedWorld(z3JlYXRBbGV4);
++				this.worldObj.entityX = true;
++			}
 +		}
  		this.motionX = this.motionY = this.motionZ = 0.0D;
 -		this.field_9128_br = false;
@@ -860,18 +917,18 @@
  				this.mcServer.field_6028_k.func_12021_a(var1, new Packet22Collect(var1.field_331_c, this.field_331_c));
  			}
  		}
-@@ -152,8 +162,8 @@
+@@ -152,8 +165,8 @@
  
  	public void func_6094_e(Entity var1) {
  		super.func_6094_e(var1);
 -		this.field_421_a.sendPacket(new Packet39(this, this.field_327_g));
 -		this.field_421_a.func_41_a(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
 +		this.netServerHandler.sendPacket(new Packet39(this, this.field_327_g));
-+		this.netServerHandler.func_41_a(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
++		this.netServerHandler.teleport(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
  	}
  
  	protected void interact(double var1, boolean var3) {
-@@ -166,4 +176,5 @@
+@@ -166,4 +179,5 @@
  	public boolean func_9059_p() {
  		return this.field_12012_al;
  	}
@@ -1106,7 +1163,7 @@
 +					this.worldObj.SZ = (int)playerSP.posZ;
 +					new WorldGenAlexAndJeb_WeddingHall().generate(this.worldObj, this.worldObj.rand, this.worldObj.SX - 3, this.worldObj.SY - 3, this.worldObj.SZ - 3);
 +					for(EntityPlayerMP playerMP : playerSPList) {
-+						playerMP.setPosition(this.worldObj.SX, this.worldObj.SY, this.worldObj.SZ);
++						playerMP.netServerHandler.teleport(this.worldObj.SX, this.worldObj.SY, this.worldObj.SZ);
 +					}
 +					this.worldObj.alexCU = true;
 +					playerSP.mcServer.configManager.sendChatMessageToAllPlayersNoop("<jeb_> Why don’t you love Alex?");
@@ -1821,7 +1878,7 @@
  										var3.log("Can\'t find user " + var5[2] + ". No tp.");
  									} else {
 -										var12.field_421_a.func_41_a(var7.posX, var7.posY, var7.posZ, var7.rotationYaw, var7.rotationPitch);
-+										var12.netServerHandler.func_41_a(var7.posX, var7.posY, var7.posZ, var7.rotationYaw, var7.rotationPitch);
++										var12.netServerHandler.teleport(var7.posX, var7.posY, var7.posZ, var7.rotationYaw, var7.rotationPitch);
  										this.func_6014_a(var4, "Teleporting " + var5[1] + " to " + var5[2] + ".");
  									}
  								} else {
@@ -1923,6 +1980,24 @@
 +		}
  	}
  }
+--- net/minecraft/src/Packet11PlayerPosition.java
++++ net/minecraft/src/Packet11PlayerPosition.java
+@@ -9,6 +9,15 @@
+ 		this.moving = true;
+ 	}
+ 
++	public Packet11PlayerPosition(double X, double Y, double stance, double Z, boolean ground) {
++		this.xPosition = X;
++		this.yPosition = Y;
++		this.stance = stance;
++		this.zPosition = Z;
++		this.onGround = true;
++		this.moving = true;
++	}
++
+ 	public void readPacketData(DataInputStream var1) throws IOException {
+ 		this.xPosition = var1.readDouble();
+ 		this.yPosition = var1.readDouble();
 --- net/minecraft/src/Packet.java
 +++ net/minecraft/src/Packet.java
 @@ -105,6 +105,8 @@
