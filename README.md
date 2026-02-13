@@ -56,7 +56,7 @@ https://github.com/YonCursedMC/Alpha_1.3.8/releases<br>
 
 最終的にワールドに入れなくなるので注意です。
 
-- サーバーは非推薦です。動かないものがあります。
+- サーバーは非推奨です。動かないものがあります。
 
 ---------
 
@@ -116,4 +116,4 @@ Thank you!
 
 **Be aware that eventually you will no longer be able to enter the world.**
 
-- The server is not recommended. Some of them don't work.
+- The server is deprecated. There are some things that don't move.
