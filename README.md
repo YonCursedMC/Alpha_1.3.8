@@ -35,13 +35,6 @@ https://prismlauncher.org/download/windows/<br>
 
 4. 楽しむ！
 
-### サーバー
-普通のMinecraftサーバーと同じです。各自で調べてやってみてください。<br>
-※ クライアントと動作が違い、完璧ではなく、バグも多いです！やる際はバグを許容してください！<br>
-必ずオフラインモードで実行してください！(初期状態ではオフになっています)<br>
-
-https://github.com/YonCursedMC/Alpha_1.3.8/releases<br>
-
 ## クレジット
 クレジット
 ### テクスチャ製作者
@@ -91,14 +84,6 @@ https://www.azul.com/downloads/?version=java-8-lts&os=windows&architecture=x86-6
 3. Once installed, set the Java path to the Zulu Java 8 you installed earlier, adjust memory allocation as needed, and click Launch.
 
 4. Enjoy!
-
-### Server
-It works the same way as a normal Minecraft server. Please look up the setup process yourself.  
-*Note: The server behaves differently from the client. It is not perfect and contains many bugs. Please be tolerant of them.*  
-Be sure to run it in **offline mode**! (It is off by default.)
-
-Download:  
-https://github.com/YonCursedMC/Alpha_1.3.8/releases
 
 ## Credits
 ### Texture Artist
