@@ -7,8 +7,9 @@
 ## 注意
 - このバージョンはMojang公式から実際に出されたものではなく、また公式に認定されたものでもありません。
 - このバージョンをプレイして発生した損害に関しては製作者は一切の責任を負いません。
-- 無断転載は禁止です。もし発見したら報告します。
-- MCPのライセンスによりコードは公開しませんが、パッチは公開します。
+- このModを何も改変せずにコピーし、そのままあたかも自分が作ったように振る舞う行為は禁止です。
+- フォークは許可されていますが、その場合はこのリポジトリとYon4800か、YonCursedMCを必ずクレジットしてください。)
+- MCPのライセンスによりコードは公開しません。改変した場所の差分のパッチは公開します。
 - 点滅やドッキリ要素、ホラー音が多いです。やる際は十分注意してください。
 - それなりのCPUやビデオボード、RAMを搭載したPCをご用意ください。
 - 実況などで使う場合は、このバージョンのURLのクレジット表記をしてくれると嬉しいです。
@@ -58,8 +59,9 @@ https://prismlauncher.org/download/windows/<br>
 ## Notes
 - This version is **not** officially released or endorsed by Mojang.
 - The creator assumes **no responsibility** for any damage caused by playing this version.
-- **Unauthorized redistribution is prohibited.** If discovered, it will be reported.
-- Due to the MCP license, the source code will not be published, but patches will be released.
+- Copying this mod without any modifications and presenting it as your own creation is prohibited.
+- Forking is permitted, but you must credit this repository and either Yon4800 or YonCursedMC.
+- Due to the MCP license, the code will not be released. Patches for the changes made will be released.
 - This version contains many flashing effects, jump scares, and horror sounds. Please proceed with caution.
 - A PC with a reasonably powerful CPU, GPU, and sufficient RAM is recommended.
 - If you use this version in a gameplay video or stream, please include a credit link to this version’s URL.
